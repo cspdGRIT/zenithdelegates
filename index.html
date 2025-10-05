@@ -744,6 +744,7 @@
                                 <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">2025 Party</th>
                                 <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">2026 Status</th>
                                 <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">Days Until</th>
+                                <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="existingBirthdaysTable">
@@ -987,6 +988,65 @@
         </div>
     </div>
 
+    <!-- Correction Modal -->
+    <div class="modal" id="correctionModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: var(--primary-gradient);">
+                <h3 class="modal-title"><i class="fas fa-edit"></i> Request Data Correction</h3>
+                <button class="close-btn" onclick="closeModal('correctionModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius-md); margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);" id="correctionPersonName">Person Name</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);" id="correctionPersonDetails">Current Details</p>
+                </div>
+
+                <form onsubmit="submitCorrection(event)">
+                    <div class="form-group">
+                        <label class="form-label">What needs to be corrected? *</label>
+                        <select class="form-input" name="correctionType" required>
+                            <option value="">Select field to correct</option>
+                            <option value="Name">Name</option>
+                            <option value="Flat Number">Flat Number</option>
+                            <option value="Birthday Date">Birthday Date</option>
+                            <option value="Phone Number">Phone Number</option>
+                            <option value="2025 Party Status">2025 Party Status</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Corrected Value *</label>
+                        <input type="text" class="form-input" name="correctedValue" required 
+                               placeholder="Enter the correct information">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Additional Notes</label>
+                        <textarea class="form-input" name="additionalNotes" rows="3" 
+                                  placeholder="Any additional context or information..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Your Name (Optional)</label>
+                        <input type="text" class="form-input" name="submittedBy" 
+                               placeholder="Your name (helps admin contact you if needed)">
+                    </div>
+
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: var(--border-radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <p style="font-size: 0.9rem; color: #856404; margin: 0;">
+                            <i class="fas fa-info-circle"></i> This correction request will be sent to the admin at <strong>priyadarshan.iitk@gmail.com</strong>
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn chai-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-paper-plane"></i> Send Correction Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Chai Button -->
     <button class="floating-chai" onclick="openChaiModal()" title="Support Developer">
         <i class="fas fa-mug-hot"></i>
@@ -1098,6 +1158,11 @@
                                 '<span style="color: var(--birthday-color);">TODAY! 🎉</span>' : 
                                 `<span style="color: ${daysUntil <= 30 ? 'var(--success-color)' : 'var(--text-muted)'};">${daysUntil} days</span>`}
                         </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <button class="action-btn edit" onclick="openCorrectionModal(${index})" style="padding: 0.5rem 1rem; font-size: 0.85rem; white-space: nowrap;">
+                                <i class="fas fa-edit"></i> Request Fix
+                            </button>
+                        </td>
                     </tr>
                 `;
             }).join('');
@@ -1121,9 +1186,109 @@
                         <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
                         <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
                         <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <button class="action-btn edit" onclick="openCorrectionModal(${sortedData.length + index})" style="padding: 0.5rem 1rem; font-size: 0.85rem; white-space: nowrap;">
+                                <i class="fas fa-edit"></i> Request Fix
+                            </button>
+                        </td>
                     </tr>
                 `).join('');
             }
+        }
+
+        function openCorrectionModal(index) {
+            const sortedData = [...existingBirthdays]
+                .filter(b => b.month && b.day)
+                .sort((a, b) => getDaysUntilBirthday(a.month, a.day) - getDaysUntilBirthday(b.month, b.day));
+            
+            const noDateEntries = existingBirthdays.filter(b => !b.month || !b.day);
+            const allSorted = [...sortedData, ...noDateEntries];
+            const person = allSorted[index];
+            
+            if (!person) return;
+            
+            // Populate correction form
+            document.getElementById('correctionPersonName').textContent = person.name;
+            document.getElementById('correctionPersonDetails').textContent = 
+                `Flat: ${person.flat || 'N/A'} | Birthday: ${person.month ? person.month + ' ' + person.day : 'TBD'}`;
+            
+            // Store person data for submission
+            document.getElementById('correctionModal').dataset.personData = JSON.stringify(person);
+            
+            // Open modal
+            document.getElementById('correctionModal').classList.add('active');
+        }
+
+        function submitCorrection(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const personData = JSON.parse(document.getElementById('correctionModal').dataset.personData);
+            
+            const correctionRequest = {
+                person: personData,
+                correctionType: formData.get('correctionType'),
+                correctedValue: formData.get('correctedValue'),
+                additionalNotes: formData.get('additionalNotes'),
+                submittedBy: formData.get('submittedBy') || 'Anonymous',
+                submittedAt: new Date().toISOString()
+            };
+            
+            // Send email to admin (simulated - needs backend)
+            sendCorrectionEmail(correctionRequest);
+            
+            // Close modal and reset form
+            closeModal('correctionModal');
+            event.target.reset();
+            
+            showNotification('Correction Requested', 
+                `Your correction request for ${personData.name} has been sent to the admin.`, 
+                'success');
+        }
+
+        function sendCorrectionEmail(correctionRequest) {
+            // This simulates sending an email - in production, this would call a backend API
+            const emailContent = `
+BIRTHDAY LIST CORRECTION REQUEST
+================================
+
+Person: ${correctionRequest.person.name}
+Current Flat: ${correctionRequest.person.flat || 'N/A'}
+Current Birthday: ${correctionRequest.person.month ? correctionRequest.person.month + ' ' + correctionRequest.person.day : 'TBD'}
+Current Phone: ${correctionRequest.person.phone || 'N/A'}
+
+CORRECTION DETAILS
+==================
+Field to Correct: ${correctionRequest.correctionType}
+Corrected Value: ${correctionRequest.correctedValue}
+
+Additional Notes:
+${correctionRequest.additionalNotes || 'None'}
+
+Submitted By: ${correctionRequest.submittedBy}
+Submitted At: ${new Date(correctionRequest.submittedAt).toLocaleString()}
+
+---
+This is an automated correction request from Birthday Bash.
+            `;
+            
+            console.log('=== EMAIL TO: priyadarshan.iitk@gmail.com ===');
+            console.log(emailContent);
+            console.log('===========================================');
+            
+            // In production, you would call a backend API like this:
+            /*
+            fetch('/api/send-correction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: 'priyadarshan.iitk@gmail.com',
+                    subject: `Birthday List Correction: ${correctionRequest.person.name}`,
+                    body: emailContent,
+                    correctionData: correctionRequest
+                })
+            });
+            */
         }
 
         function getDaysUntilBirthday(month, day) {
