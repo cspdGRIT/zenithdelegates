@@ -776,7 +776,7 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label">Name *</label>
-                                    <input type="text" class="form-input" name="name" required placeholder="John Doe">
+                                    <input type="text" class="form-input" name="name" required placeholder="PD">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Birthday *</label>
@@ -1066,30 +1066,30 @@
     <script>
         // Existing birthday data
         const existingBirthdays = [
-            { name: "Goutham", flat: "E21", month: "Jan", day: 10, phone: "9052323232", party2025: "No", status2026: "" },
-            { name: "Ravindra", flat: "F16", month: "Jan", day: 21, phone: "9160061456", party2025: "Yes", status2026: "" },
-            { name: "Nagi", flat: "J17", month: "March", day: 1, phone: "7674014433", party2025: "Yes", status2026: "" },
-            { name: "Varun", flat: "B23", month: "March", day: 8, phone: "7406269369", party2025: "Yes", status2026: "" },
+            { name: "Goutham", flat: "E2104", month: "Jan", day: 10, phone: "9052323232", party2025: "No", status2026: "" },
+            { name: "Ravindra", flat: "F1605", month: "Jan", day: 21, phone: "9160061456", party2025: "Yes", status2026: "" },
+            { name: "Nagi", flat: "J1701", month: "March", day: 1, phone: "7674014433", party2025: "Yes", status2026: "" },
+            { name: "Varun", flat: "B2308", month: "March", day: 8, phone: "7406269369", party2025: "Yes", status2026: "" },
             { name: "Shiva Kaku", flat: "", month: "March", day: 23, phone: "9160730005", party2025: "No", status2026: "" },
-            { name: "Damoder", flat: "E9", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes", status2026: "" },
-            { name: "Mogili", flat: "A", month: "May", day: 10, phone: "7337328671", party2025: "No", status2026: "" },
-            { name: "Raj", flat: "F", month: "Jun", day: 11, phone: "9949531325", party2025: "Yes", status2026: "" },
-            { name: "Srikanth", flat: "L9", month: "Jun", day: 15, phone: "9618567876", party2025: "Yes", status2026: "" },
-            { name: "Vijay", flat: "", month: "July", day: 12, phone: "9000277757", party2025: "No", status2026: "" },
-            { name: "Srinivasu B", flat: "F10", month: "Jul", day: 28, phone: "9160026888", party2025: "Yes", status2026: "" },
-            { name: "Chaitu", flat: "G", month: "Aug", day: 6, phone: "9704007409", party2025: "Yes", status2026: "" },
-            { name: "Ramesh", flat: "C21", month: "Sep", day: 4, phone: "8886438888", party2025: "No", status2026: "" },
-            { name: "Bhargav", flat: "H5", month: "Sep", day: 25, phone: "8886178468", party2025: "No", status2026: "" },
-            { name: "Mohan", flat: "F4", month: "Jun", day: 1, phone: "9916666931", party2025: "No", status2026: "" },
-            { name: "Sandeep", flat: "M", month: "Nov", day: 18, phone: "6303726803", party2025: "No", status2026: "" },
-            { name: "PDC", flat: "23", month: "Nov", day: 19, phone: "8341346818", party2025: "No", status2026: "" },
-            { name: "Sanjay", flat: "I12", month: "Nov", day: 30, phone: "9182001190", party2025: "No", status2026: "" },
-            { name: "Nagesh", flat: "F7", month: "Dec", day: 3, phone: "9908000038", party2025: "Yes", status2026: "" },
-            { name: "Suryprakash", flat: "", month: "Dec", day: 6, phone: "", party2025: "No", status2026: "" },
-            { name: "Jagannadh", flat: "F9", month: "Dec", day: 16, phone: "9989044670", party2025: "Yes", status2026: "" },
-            { name: "Srini", flat: "K22", month: "", day: 0, phone: "9951704555", party2025: "No", status2026: "" },
-            { name: "Surya", flat: "F13", month: "", day: 0, phone: "8770833862", party2025: "No", status2026: "" },
-            { name: "Surya Tennis", flat: "F24", month: "", day: 0, phone: "9000004443", party2025: "No", status2026: "" }
+            { name: "Damoder", flat: "E901", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes", status2026: "" },
+            { name: "Mogili", flat: "A901", month: "May", day: 10, phone: "7337328671", party2025: "No", status2026: "" },
+            { name: "Raj", flat: "F1003", month: "Jun", day: 11, phone: "9949531325", party2025: "Yes", status2026: "" },
+            { name: "Srikanth", flat: "L904", month: "Jun", day: 15, phone: "9618567876", party2025: "Yes", status2026: "" },
+            { name: "Vijay", flat: "H1904", month: "July", day: 12, phone: "9000277757", party2025: "No", status2026: "" },
+            { name: "Srinivasu B", flat: "F1008", month: "Jul", day: 28, phone: "9160026888", party2025: "Yes", status2026: "" },
+            { name: "Chaitu", flat: "G1008", month: "Aug", day: 6, phone: "9704007409", party2025: "Yes", status2026: "" },
+            { name: "Ramesh", flat: "C2104", month: "Sep", day: 4, phone: "8886438888", party2025: "No", status2026: "" },
+            { name: "Bhargav", flat: "H505", month: "Sep", day: 25, phone: "8886178468", party2025: "No", status2026: "" },
+            { name: "Mohan", flat: "F408", month: "Jun", day: 1, phone: "9916666931", party2025: "No", status2026: "" },
+            { name: "Sandeep", flat: "M903", month: "Nov", day: 18, phone: "6303726803", party2025: "No", status2026: "" },
+            { name: "PD", flat: "C2306", month: "Nov", day: 19, phone: "8341346818", party2025: "No", status2026: "" },
+            { name: "Sanjay", flat: "I1202", month: "Nov", day: 30, phone: "9182001190", party2025: "No", status2026: "" },
+            { name: "Nagesh", flat: "F701", month: "Dec", day: 3, phone: "9908000038", party2025: "Yes", status2026: "" },
+            { name: "Suryprakash", flat: "I1903", month: "Dec", day: 6, phone: "", party2025: "No", status2026: "" },
+            { name: "Jagannadh", flat: "F906", month: "Dec", day: 16, phone: "9989044670", party2025: "Yes", status2026: "" },
+            { name: "Srini", flat: "K2205", month: "", day: 0, phone: "9951704555", party2025: "No", status2026: "" },
+            { name: "Surya", flat: "F1308", month: "", day: 0, phone: "8770833862", party2025: "No", status2026: "" },
+            { name: "Surya Tennis", flat: "F2407", month: "", day: 0, phone: "9000004443", party2025: "No", status2026: "" }
         ];
 
         // In-memory storage for birthdays
