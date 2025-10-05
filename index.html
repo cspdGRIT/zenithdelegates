@@ -718,6 +718,41 @@
     <!-- Main Content -->
     <section class="main-content">
         <div class="container">
+            <!-- Existing Birthday Data Table -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="chai-corner" onclick="openChaiModal()" title="Love this list? ChaiCheers!">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-table"></i> Birthday List 2025-2026
+                    </h2>
+                    <button class="btn btn-primary" onclick="toggleAllPhones()">
+                        <i class="fas fa-eye"></i> <span id="togglePhoneText">Show All Phones</span>
+                    </button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: var(--primary-gradient); color: white;">
+                                <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">#</th>
+                                <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Name</th>
+                                <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Flat</th>
+                                <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Birthday</th>
+                                <th style="padding: 1rem; text-align: left; border: 1px solid #ddd;">Phone</th>
+                                <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">2025 Party</th>
+                                <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">2026 Status</th>
+                                <th style="padding: 1rem; text-align: center; border: 1px solid #ddd;">Days Until</th>
+                            </tr>
+                        </thead>
+                        <tbody id="existingBirthdaysTable">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="content-grid">
                 <!-- Birthday Form & List -->
                 <div>
@@ -969,17 +1004,207 @@
     </div>
 
     <script>
+        // Existing birthday data
+        const existingBirthdays = [
+            { name: "Goutham", flat: "E21", month: "Jan", day: 10, phone: "9052323232", party2025: "No", status2026: "" },
+            { name: "Ravindra", flat: "F16", month: "Jan", day: 21, phone: "9160061456", party2025: "Yes", status2026: "" },
+            { name: "Nagi", flat: "J17", month: "March", day: 1, phone: "7674014433", party2025: "Yes", status2026: "" },
+            { name: "Varun", flat: "B23", month: "March", day: 8, phone: "7406269369", party2025: "Yes", status2026: "" },
+            { name: "Shiva Kaku", flat: "", month: "March", day: 23, phone: "9160730005", party2025: "No", status2026: "" },
+            { name: "Damoder", flat: "E9", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes", status2026: "" },
+            { name: "Mogili", flat: "A", month: "May", day: 10, phone: "7337328671", party2025: "No", status2026: "" },
+            { name: "Raj", flat: "F", month: "Jun", day: 11, phone: "9949531325", party2025: "Yes", status2026: "" },
+            { name: "Srikanth", flat: "L9", month: "Jun", day: 15, phone: "9618567876", party2025: "Yes", status2026: "" },
+            { name: "Vijay", flat: "", month: "July", day: 12, phone: "9000277757", party2025: "No", status2026: "" },
+            { name: "Srinivasu B", flat: "F10", month: "Jul", day: 28, phone: "9160026888", party2025: "Yes", status2026: "" },
+            { name: "Chaitu", flat: "G", month: "Aug", day: 6, phone: "9704007409", party2025: "Yes", status2026: "" },
+            { name: "Ramesh", flat: "C21", month: "Sep", day: 4, phone: "8886438888", party2025: "No", status2026: "" },
+            { name: "Bhargav", flat: "H5", month: "Sep", day: 25, phone: "8886178468", party2025: "No", status2026: "" },
+            { name: "Mohan", flat: "F4", month: "Jun", day: 1, phone: "9916666931", party2025: "No", status2026: "" },
+            { name: "Sandeep", flat: "M", month: "Nov", day: 18, phone: "6303726803", party2025: "No", status2026: "" },
+            { name: "PDC", flat: "23", month: "Nov", day: 19, phone: "8341346818", party2025: "No", status2026: "" },
+            { name: "Sanjay", flat: "I12", month: "Nov", day: 30, phone: "9182001190", party2025: "No", status2026: "" },
+            { name: "Nagesh", flat: "F7", month: "Dec", day: 3, phone: "9908000038", party2025: "Yes", status2026: "" },
+            { name: "Suryprakash", flat: "", month: "Dec", day: 6, phone: "", party2025: "No", status2026: "" },
+            { name: "Jagannadh", flat: "F9", month: "Dec", day: 16, phone: "9989044670", party2025: "Yes", status2026: "" },
+            { name: "Srini", flat: "K22", month: "", day: 0, phone: "9951704555", party2025: "No", status2026: "" },
+            { name: "Surya", flat: "F13", month: "", day: 0, phone: "8770833862", party2025: "No", status2026: "" },
+            { name: "Surya Tennis", flat: "F24", month: "", day: 0, phone: "9000004443", party2025: "No", status2026: "" }
+        ];
+
         // In-memory storage for birthdays
         let birthdays = [];
         let selectedChaiAmount = 50;
+        let phonesVisible = false;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            displayExistingBirthdays();
             loadBirthdays();
             checkBirthdayReminders();
             // Check for birthdays daily
             setInterval(checkBirthdayReminders, 24 * 60 * 60 * 1000);
         });
+
+        function displayExistingBirthdays() {
+            const tableBody = document.getElementById('existingBirthdaysTable');
+            
+            // Sort by next birthday
+            const sortedData = [...existingBirthdays]
+                .filter(b => b.month && b.day) // Only include valid dates
+                .sort((a, b) => {
+                    return getDaysUntilBirthday(a.month, a.day) - getDaysUntilBirthday(b.month, b.day);
+                });
+            
+            tableBody.innerHTML = sortedData.map((person, index) => {
+                const daysUntil = getDaysUntilBirthday(person.month, person.day);
+                const isToday = daysUntil === 0;
+                const isUpcoming = daysUntil > 0 && daysUntil <= 30;
+                
+                const rowColor = isToday ? 'background: var(--cake-gradient);' : 
+                                isUpcoming ? 'background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);' : 
+                                'background: white;';
+                
+                return `
+                    <tr style="${rowColor} border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">${index + 1}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">
+                            ${isToday ? '<i class="fas fa-birthday-cake" style="color: var(--birthday-color);"></i> ' : ''}
+                            ${person.name}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.flat || '-'}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">
+                            ${person.month} ${person.day}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <span class="phone-hidden" data-phone="${person.phone}" style="color: var(--text-muted);">
+                                ${person.phone ? '••••••••••' : '-'}
+                            </span>
+                            <span class="phone-visible" style="display: none;">${person.phone || '-'}</span>
+                            ${person.phone ? `<button class="btn" onclick="togglePhone(this)" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem;">
+                                <i class="fas fa-eye"></i>
+                            </button>` : ''}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            ${person.party2025 === 'Yes' ? 
+                                '<span style="color: var(--success-color); font-weight: 600;"><i class="fas fa-check-circle"></i> Yes</span>' : 
+                                '<span style="color: var(--text-muted);"><i class="fas fa-times-circle"></i> No</span>'}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            ${person.status2026 || '<span style="color: var(--warning-color);">Upcoming</span>'}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center; font-weight: 700;">
+                            ${isToday ? 
+                                '<span style="color: var(--birthday-color);">TODAY! 🎉</span>' : 
+                                `<span style="color: ${daysUntil <= 30 ? 'var(--success-color)' : 'var(--text-muted)'};">${daysUntil} days</span>`}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Add entries without dates at the bottom
+            const noDateEntries = existingBirthdays.filter(b => !b.month || !b.day);
+            if (noDateEntries.length > 0) {
+                tableBody.innerHTML += noDateEntries.map((person, index) => `
+                    <tr style="background: #f8f9fa; opacity: 0.7;">
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${sortedData.length + index + 1}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.name}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.flat || '-'}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; color: var(--text-muted);">Date TBD</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <span class="phone-hidden">${person.phone ? '••••••••••' : '-'}</span>
+                            <span class="phone-visible" style="display: none;">${person.phone || '-'}</span>
+                            ${person.phone ? `<button class="btn" onclick="togglePhone(this)" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem;">
+                                <i class="fas fa-eye"></i>
+                            </button>` : ''}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function getDaysUntilBirthday(month, day) {
+            if (!month || !day) return 999; // Invalid dates go to end
+            
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            
+            // Month mapping
+            const monthMap = {
+                'Jan': 0, 'January': 0,
+                'Feb': 1, 'February': 1,
+                'Mar': 2, 'March': 2,
+                'Apr': 3, 'April': 3,
+                'May': 4,
+                'Jun': 5, 'June': 5,
+                'Jul': 6, 'July': 6,
+                'Aug': 7, 'August': 7,
+                'Sep': 8, 'September': 8,
+                'Oct': 9, 'October': 9,
+                'Nov': 10, 'November': 10,
+                'Dec': 11, 'December': 11
+            };
+            
+            const monthNum = monthMap[month];
+            if (monthNum === undefined) return 999;
+            
+            let birthday = new Date(currentYear, monthNum, day);
+            
+            // If birthday has passed this year, use next year
+            if (birthday < today) {
+                birthday = new Date(currentYear + 1, monthNum, day);
+            }
+            
+            const diffTime = birthday - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        function togglePhone(button) {
+            const td = button.closest('td');
+            const hidden = td.querySelector('.phone-hidden');
+            const visible = td.querySelector('.phone-visible');
+            const icon = button.querySelector('i');
+            
+            if (hidden.style.display === 'none') {
+                hidden.style.display = 'inline';
+                visible.style.display = 'none';
+                icon.className = 'fas fa-eye';
+            } else {
+                hidden.style.display = 'none';
+                visible.style.display = 'inline';
+                icon.className = 'fas fa-eye-slash';
+            }
+        }
+
+        function toggleAllPhones() {
+            phonesVisible = !phonesVisible;
+            const hiddenElements = document.querySelectorAll('.phone-hidden');
+            const visibleElements = document.querySelectorAll('.phone-visible');
+            const toggleText = document.getElementById('togglePhoneText');
+            
+            hiddenElements.forEach(el => {
+                el.style.display = phonesVisible ? 'none' : 'inline';
+            });
+            
+            visibleElements.forEach(el => {
+                el.style.display = phonesVisible ? 'inline' : 'none';
+            });
+            
+            toggleText.textContent = phonesVisible ? 'Hide All Phones' : 'Show All Phones';
+            
+            // Update all button icons
+            document.querySelectorAll('.phone-hidden').forEach(hidden => {
+                const button = hidden.parentElement.querySelector('button i');
+                if (button) {
+                    button.className = phonesVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
+                }
+            });
+        }
 
         function addBirthday(event) {
             event.preventDefault();
