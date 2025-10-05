@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Bash - Never Miss a Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --birthday-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --chai-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            --cake-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            
+            --primary-color: #667eea;
+            --birthday-color: #f5576c;
+            --success-color: #00f2fe;
+            --warning-color: #ffc107;
+            
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+            
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-xl);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-btn {
+            background: var(--chai-gradient);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--birthday-gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '🎂 🎉 🎈 🎁 🎊';
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            font-size: 3rem;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from { left: -10%; }
+            to { left: 110%; }
+        }
+
+        .hero h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            background: var(--birthday-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chai-corner {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--chai-gradient);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chai-corner:hover {
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .optional-badge {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Birthday List */
+        .birthday-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .birthday-item {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border-left: 4px solid var(--birthday-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .birthday-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .birthday-item.upcoming {
+            border-left-color: var(--success-color);
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .birthday-item.today {
+            border-left-color: var(--warning-color);
+            background: var(--cake-gradient);
+            animation: celebrate 1s infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .birthday-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .birthday-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .birthday-date {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .birthday-countdown {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .birthday-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.edit {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .action-btn.delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Upcoming Birthdays Sidebar */
+        .upcoming-section {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .upcoming-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .upcoming-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: var(--border-radius-md);
+            border-left: 3px solid var(--success-color);
+        }
+
+        .upcoming-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .upcoming-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Useful Links Section */
+        .links-section {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-top: 2rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .link-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--birthday-color);
+        }
+
+        .link-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .link-quote {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            margin: 2rem auto;
+            border-radius: var(--border-radius-lg);
+            max-width: 500px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            background: var(--chai-gradient);
+            color: white;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .chai-widget {
+            text-align: center;
+        }
+
+        .chai-amounts {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .chai-amount {
+            padding: 0.875rem 1.5rem;
+            border: 2px solid #ff9a9e;
+            border-radius: var(--border-radius-xl);
+            background: white;
+            color: #ff9a9e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        .chai-amount:hover,
+        .chai-amount.selected {
+            background: var(--chai-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-pay-btn {
+            background: var(--chai-gradient);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-pay-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .payment-info {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 1px solid #f59e0b;
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .payment-info p {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Floating Buttons */
+        .floating-chai {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            background: var(--chai-gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .floating-chai:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 25px 50px rgba(255, 154, 158, 0.5);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--success-color);
+            border-radius: var(--border-radius-md);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-xl);
+            z-index: 1500;
+            max-width: 350px;
+            display: none;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.error {
+            border-color: #ef4444;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Privacy Notice */
+        .privacy-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Birthday Bash</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="chai-btn" onclick="openChaiModal()">
+                        <i class="fas fa-mug-hot"></i> ChaiCheers
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Never Miss a Birthday Again!</h1>
+            <p>Keep track of all your loved ones' special days in one beautiful place</p>
+            <button class="btn btn-primary" onclick="scrollToForm()">
+                <i class="fas fa-plus"></i> Add Birthday
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Birthday Form & List -->
+                <div>
+                    <!-- Add Birthday Form -->
+                    <div class="card" id="addBirthdayCard">
+                        <div class="chai-corner" onclick="openChaiModal()" title="Support with ChaiCheers!">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-user-plus"></i> Add New Birthday
+                            </h2>
+                        </div>
+
+                        <div class="privacy-notice">
+                            <i class="fas fa-info-circle"></i> <strong>Privacy Notice:</strong> Phone numbers are optional and kept private. Email notifications will be sent to the administrator for birthday reminders.
+                        </div>
+
+                        <form onsubmit="addBirthday(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Name *</label>
+                                    <input type="text" class="form-input" name="name" required placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Birthday *</label>
+                                    <input type="date" class="form-input" name="birthday" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" name="email" placeholder="john@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Phone Number 
+                                        <span class="optional-badge">Optional</span>
+                                    </label>
+                                    <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <input type="text" class="form-input" name="notes" placeholder="Favorite gift ideas, hobbies, etc.">
+                            </div>
+
+                            <button type="submit" class="btn chai-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                                <i class="fas fa-birthday-cake"></i> Add Birthday
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Birthday List -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="chai-corner" onclick="openChaiModal()" title="Love this? ChaiCheers!">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-list"></i> All Birthdays
+                            </h2>
+                            <span style="font-size: 0.9rem; color: var(--text-muted);" id="birthdayCount">0 birthdays</span>
+                        </div>
+
+                        <div class="birthday-list" id="birthdayList">
+                            <div class="empty-state">
+                                <i class="fas fa-birthday-cake"></i>
+                                <p>No birthdays added yet. Add your first birthday above!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <!-- Upcoming Birthdays -->
+                    <div class="upcoming-section">
+                        <div class="chai-corner" onclick="openChaiModal()" title="Support this feature!">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <h3 class="card-title">
+                            <i class="fas fa-calendar-check"></i> Next 30 Days
+                        </h3>
+                        <div class="upcoming-list" id="upcomingList">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar"></i>
+                                <p style="font-size: 0.9rem;">No upcoming birthdays</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-chart-bar"></i> Quick Stats
+                        </h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--border-radius-md);">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--birthday-color);" id="totalBirthdays">0</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Total Birthdays</div>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--border-radius-md);">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--success-color);" id="thisMonth">0</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Useful Links Section -->
+            <div class="links-section">
+                <div class="chai-corner" onclick="openChaiModal()" title="Explore more tools!">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <h2 class="card-title">
+                    <i class="fas fa-link"></i> Explore More Useful Tools
+                </h2>
+                <div class="links-grid">
+                    <a href="https://cspdgrit.github.io/skillscore/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-brain"></i> SkillScore
+                        </div>
+                        <div class="link-quote">"Match CVs with precision - AI-powered recruitment made simple"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/remind/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-bell"></i> ReminderHub
+                        </div>
+                        <div class="link-quote">"Never miss renewals - smart document tracking at your fingertips"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/lawgic/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-gavel"></i> Lawgic
+                        </div>
+                        <div class="link-quote">"Legal intelligence simplified - your AI legal assistant"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/anydoc/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-file-alt"></i> AnyDoc
+                        </div>
+                        <div class="link-quote">"Process any document instantly - OCR and AI extraction"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/dumpyard/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-trash-restore"></i> DumpYard
+                        </div>
+                        <div class="link-quote">"Transform waste to worth - sustainable solutions for communities"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/zenithshop/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-shopping-cart"></i> ZenithShop
+                        </div>
+                        <div class="link-quote">"Shop smarter, live better - your digital marketplace"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/sPeeDlearn/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-graduation-cap"></i> SpeedLearn
+                        </div>
+                        <div class="link-quote">"Learn faster, retain longer - accelerated education platform"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/goanimal/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-paw"></i> GoAnimal
+                        </div>
+                        <div class="link-quote">"Animal welfare made easy - caring for our furry friends"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/flat2farm/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-leaf"></i> Flat2Farm
+                        </div>
+                        <div class="link-quote">"From concrete to crops - urban farming revolution"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/ruralcare/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-heartbeat"></i> RuralCare
+                        </div>
+                        <div class="link-quote">"Healthcare for all - bridging rural health gaps"</div>
+                    </a>
+
+                    <a href="https://cspdgrit.github.io/medicai/" target="_blank" class="link-card">
+                        <div class="link-title">
+                            <i class="fas fa-stethoscope"></i> MedicAI
+                        </div>
+                        <div class="link-quote">"AI-powered diagnosis - your digital health companion"</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chai Modal -->
+    <div class="modal" id="chaiModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-mug-hot"></i> Support Birthday Bash</h3>
+                <button class="close-btn" onclick="closeModal('chaiModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="chai-widget">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-mug-hot" style="font-size: 4rem; background: var(--chai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                        <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-top: 1rem;">This birthday reminder service is completely free! Support the developer to keep it running and add new features.</p>
+                    </div>
+                    <div class="chai-amounts">
+                        <div class="chai-amount" onclick="selectChaiAmount(25, this)">₹25</div>
+                        <div class="chai-amount selected" onclick="selectChaiAmount(50, this)">₹50</div>
+                        <div class="chai-amount" onclick="selectChaiAmount(100, this)">₹100</div>
+                        <div class="chai-amount" onclick="selectChaiAmount(200, this)">₹200</div>
+                    </div>
+                    <div class="payment-info">
+                        <p><strong><i class="fas fa-mobile-alt"></i> Developer UPI:</strong> 8341346818@ybl</p>
+                        <small style="color: var(--text-muted);">Your support keeps Birthday Bash free for everyone!</small>
+                    </div>
+                    <button class="chai-pay-btn" onclick="processChaiPayment()">
+                        <i class="fas fa-mug-hot"></i> ChaiCheers ₹<span id="selectedChaiAmount">50</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chai Button -->
+    <button class="floating-chai" onclick="openChaiModal()" title="Support Developer">
+        <i class="fas fa-mug-hot"></i>
+    </button>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+            <div>
+                <div style="font-weight: 600;" id="notificationTitle">Success</div>
+                <div style="font-size: 0.9rem; color: var(--text-muted);" id="notificationText">Action completed</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // In-memory storage for birthdays
+        let birthdays = [];
+        let selectedChaiAmount = 50;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBirthdays();
+            checkBirthdayReminders();
+            // Check for birthdays daily
+            setInterval(checkBirthdayReminders, 24 * 60 * 60 * 1000);
+        });
+
+        function addBirthday(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const birthday = {
+                id: Date.now().toString(),
+                name: formData.get('name'),
+                birthday: formData.get('birthday'),
+                email: formData.get('email') || '',
+                phone: formData.get('phone') || '',
+                notes: formData.get('notes') || '',
+                addedDate: new Date().toISOString()
+            };
+            
+            birthdays.push(birthday);
+            saveBirthdays();
+            displayBirthdays();
+            
+            // Reset form
+            event.target.reset();
+            
+            // Send notification email (simulated)
+            sendBirthdayNotification(birthday);
+            
+            showNotification('Birthday Added!', `${birthday.name}'s birthday has been added successfully.`, 'success');
+        }
+
+        function displayBirthdays() {
+            const listContainer = document.getElementById('birthdayList');
+            const upcomingContainer = document.getElementById('upcomingList');
+            
+            if (birthdays.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-birthday-cake"></i>
+                        <p>No birthdays added yet. Add your first birthday above!</p>
+                    </div>
+                `;
+                upcomingContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar"></i>
+                        <p style="font-size: 0.9rem;">No upcoming birthdays</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort by next birthday
+            const sortedBirthdays = [...birthdays].sort((a, b) => {
+                return getDaysUntil(a.birthday) - getDaysUntil(b.birthday);
+            });
+            
+            // Display all birthdays
+            listContainer.innerHTML = sortedBirthdays.map(birthday => {
+                const daysUntil = getDaysUntil(birthday.birthday);
+                const isToday = daysUntil === 0;
+                const isUpcoming = daysUntil > 0 && daysUntil <= 30;
+                
+                return `
+                    <div class="birthday-item ${isToday ? 'today' : isUpcoming ? 'upcoming' : ''}">
+                        <div class="birthday-header">
+                            <div class="birthday-name">
+                                ${isToday ? '<i class="fas fa-birthday-cake"></i>' : '<i class="fas fa-user"></i>'}
+                                ${birthday.name}
+                            </div>
+                            <div class="birthday-date">${formatDate(birthday.birthday)}</div>
+                        </div>
+                        ${birthday.notes ? `<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><i class="fas fa-sticky-note"></i> ${birthday.notes}</div>` : ''}
+                        <div class="birthday-countdown">
+                            ${isToday ? '🎉 <strong>TODAY!</strong>' : daysUntil > 0 ? `In ${daysUntil} day${daysUntil > 1 ? 's' : ''}` : `${Math.abs(daysUntil)} day${Math.abs(daysUntil) > 1 ? 's' : ''} ago`}
+                        </div>
+                        <div class="birthday-actions">
+                            <button class="action-btn edit" onclick="editBirthday('${birthday.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn delete" onclick="deleteBirthday('${birthday.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Display upcoming birthdays (next 30 days)
+            const upcoming = sortedBirthdays.filter(b => {
+                const days = getDaysUntil(b.birthday);
+                return days >= 0 && days <= 30;
+            });
+            
+            if (upcoming.length > 0) {
+                upcomingContainer.innerHTML = upcoming.map(birthday => `
+                    <div class="upcoming-item">
+                        <div class="upcoming-name">${birthday.name}</div>
+                        <div class="upcoming-date">
+                            ${formatDate(birthday.birthday)} - ${getDaysUntil(birthday.birthday) === 0 ? 'Today!' : `in ${getDaysUntil(birthday.birthday)} days`}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                upcomingContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar"></i>
+                        <p style="font-size: 0.9rem;">No birthdays in the next 30 days</p>
+                    </div>
+                `;
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('birthdayCount').textContent = `${birthdays.length} birthday${birthdays.length !== 1 ? 's' : ''}`;
+            document.getElementById('totalBirthdays').textContent = birthdays.length;
+            
+            const thisMonth = birthdays.filter(b => {
+                const bDate = new Date(b.birthday);
+                const now = new Date();
+                return bDate.getMonth() === now.getMonth();
+            }).length;
+            
+            document.getElementById('thisMonth').textContent = thisMonth;
+        }
+
+        function getDaysUntil(birthdayStr) {
+            const today = new Date();
+            const birthday = new Date(birthdayStr);
+            
+            // Set birthday to this year
+            birthday.setFullYear(today.getFullYear());
+            
+            // If birthday has passed this year, use next year
+            if (birthday < today) {
+                birthday.setFullYear(today.getFullYear() + 1);
+            }
+            
+            const diffTime = birthday - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function deleteBirthday(id) {
+            if (confirm('Are you sure you want to delete this birthday?')) {
+                birthdays = birthdays.filter(b => b.id !== id);
+                saveBirthdays();
+                displayBirthdays();
+                showNotification('Deleted', 'Birthday has been removed.', 'success');
+            }
+        }
+
+        function editBirthday(id) {
+            const birthday = birthdays.find(b => b.id === id);
+            if (!birthday) return;
+            
+            // Populate form
+            document.querySelector('input[name="name"]').value = birthday.name;
+            document.querySelector('input[name="birthday"]').value = birthday.birthday;
+            document.querySelector('input[name="email"]').value = birthday.email;
+            document.querySelector('input[name="phone"]').value = birthday.phone;
+            document.querySelector('input[name="notes"]').value = birthday.notes;
+            
+            // Delete old entry
+            birthdays = birthdays.filter(b => b.id !== id);
+            saveBirthdays();
+            displayBirthdays();
+            
+            // Scroll to form
+            scrollToForm();
+            
+            showNotification('Edit Mode', 'Update the details and click Add Birthday.', 'success');
+        }
+
+        function checkBirthdayReminders() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            birthdays.forEach(birthday => {
+                const bDate = new Date(birthday.birthday);
+                bDate.setFullYear(tomorrow.getFullYear());
+                
+                if (bDate.toDateString() === tomorrow.toDateString()) {
+                    sendReminderEmail(birthday);
+                }
+            });
+        }
+
+        function sendBirthdayNotification(birthday) {
+            // This would send email via backend service
+            console.log('Sending notification email to priyadarshan.iitk@gmail.com');
+            console.log('New birthday added:', birthday);
+            
+            // In production, call backend API:
+            // fetch('/api/send-notification', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ birthday, adminEmail: 'priyadarshan.iitk@gmail.com' })
+            // });
+        }
+
+        function sendReminderEmail(birthday) {
+            // This would send reminder email via backend service
+            console.log('Sending reminder email to priyadarshan.iitk@gmail.com');
+            console.log('Reminder for:', birthday.name, 'Birthday tomorrow!');
+            
+            // In production, call backend API:
+            // fetch('/api/send-reminder', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ birthday, adminEmail: 'priyadarshan.iitk@gmail.com' })
+            // });
+        }
+
+        function saveBirthdays() {
+            // In production, save to backend
+            // For demo, using in-memory storage
+            localStorage.setItem('birthdays', JSON.stringify(birthdays));
+        }
+
+        function loadBirthdays() {
+            const saved = localStorage.getItem('birthdays');
+            if (saved) {
+                birthdays = JSON.parse(saved);
+                displayBirthdays();
+            }
+        }
+
+        function scrollToForm() {
+            document.getElementById('addBirthdayCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Chai functionality
+        function openChaiModal() {
+            document.getElementById('chaiModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function selectChaiAmount(amount, element) {
+            selectedChaiAmount = amount;
+            document.querySelectorAll('.chai-amount').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('selectedChaiAmount').textContent = amount;
+        }
+
+        function processChaiPayment() {
+            const upiId = '8341346818@ybl';
+            const upiUrl = `upi://pay?pa=${upiId}&pn=Birthday%20Bash&am=${selectedChaiAmount}&cu=INR&tn=Support%20for%20Birthday%20Reminder%20Service`;
+            
+            try {
+                window.location.href = upiUrl;
+                setTimeout(() => {
+                    showNotification('Thank You!', `₹${selectedChaiAmount} ChaiCheers received! This keeps Birthday Bash free for everyone.`, 'success');
+                    closeModal('chaiModal');
+                }, 1000);
+            } catch (error) {
+                alert(`Please pay ₹${selectedChaiAmount} to UPI ID: ${upiId}`);
+            }
+        }
+
+        function showNotification(title, message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const titleElement = document.getElementById('notificationTitle');
+            const textElement = document.getElementById('notificationText');
+            
+            titleElement.textContent = title;
+            textElement.textContent = message;
+            
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Close modal on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
