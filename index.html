@@ -1,3 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Bash - Never Miss a Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --birthday-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --chai-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            --cake-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            
+            --primary-color: #667eea;
+            --birthday-color: #f5576c;
+            --success-color: #00f2fe;
+            --warning-color: #ffc107;
+            
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+            
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-xl);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: var(--border-radius-xl);
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-btn {
+            background: var(--chai-gradient);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chai-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--birthday-gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '🎂 🎉 🎈 🎁 🎊';
+            position: absolute;
+            top: 50%;
+            left: -10%;
+            font-size: 3rem;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from { left: -10%; }
+            to { left: 110%; }
+        }
+
+        .hero h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            background: var(--birthday-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chai-corner {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--chai-gradient);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chai-corner:hover {
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* FILTER CONTROLS - NEW */
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .filter-btn {
+            background: var(--bg-primary);
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .filter-content {
+            display: none;
+            position: absolute;
+            background: var(--bg-primary);
+            min-width: 180px;
+            box-shadow: var(--shadow-xl);
+            border-radius: var(--border-radius-md);
+            border: 1px solid #e2e8f0;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .filter-content.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .filter-option:hover {
+            background: var(--bg-secondary);
+        }
+
+        .filter-option.selected {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .filter-option i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .clear-filters {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .clear-filters:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+            transform: translateY(-1px);
+        }
+
+        .filter-stats {
+            background: var(--success-gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .optional-badge {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid #e2e8f0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-primary);
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .data-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .data-table tr:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transform: scale(1.01);
+        }
+
+        .party-status {
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 80px;
+            justify-content: center;
+        }
+
+        .party-status.yes {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(74, 222, 128, 0.3);
+        }
+
+        .party-status.no {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(248, 113, 113, 0.3);
+        }
+
+        .phone-hidden {
+            color: var(--text-muted);
+        }
+
+        .phone-toggle {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .phone-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            margin: 2rem auto;
+            border-radius: var(--border-radius-lg);
+            max-width: 500px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            background: var(--chai-gradient);
+            color: white;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--success-color);
+            border-radius: var(--border-radius-md);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-xl);
+            z-index: 1500;
+            max-width: 350px;
+            display: none;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Birthday Bash</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="chai-btn" onclick="openChaiModal()">
+                        <i class="fas fa-mug-hot"></i> ChaiCheers
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Never Miss a Birthday Again!</h1>
+            <p>Keep track of all your loved ones' special days in one beautiful place</p>
+            <button class="btn btn-primary" onclick="scrollToForm()">
+                <i class="fas fa-plus"></i> Add Birthday
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <!-- Existing Birthday Data Table -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="chai-corner" onclick="openChaiModal()" title="Love this list? ChaiCheers!">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-table"></i> Birthday List 2025-2026
+                    </h2>
+                    <button class="btn btn-primary" onclick="toggleAllPhones()">
+                        <i class="fas fa-eye"></i> <span id="togglePhoneText">Show All Phones</span>
+                    </button>
+                </div>
+
+                <!-- FILTER CONTROLS -->
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-filter"></i> 2025 Party Status
+                        </label>
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" onclick="toggleFilter('partyFilter')">
+                                <span id="selectedPartyFilter">All Status</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="filter-content" id="partyFilter">
+                                <div class="filter-option selected" onclick="selectPartyFilter('all')">
+                                    <i class="fas fa-list"></i> All Status
+                                </div>
+                                <div class="filter-option" onclick="selectPartyFilter('yes')">
+                                    <i class="fas fa-check-circle" style="color: #22c55e;"></i> Party Given
+                                </div>
+                                <div class="filter-option" onclick="selectPartyFilter('no')">
+                                    <i class="fas fa-times-circle" style="color: #ef4444;"></i> Party Not Given
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="clear-filters" onclick="clearAllFilters()">
+                        <i class="fas fa-times"></i> Clear All
+                    </button>
+
+                    <div class="filter-stats" id="filterStats">
+                        <span id="visibleCount">0</span> of <span id="totalCount">0</span> entries
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="birthdayTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Flat</th>
+                                <th>Birthday</th>
+                                <th>Phone</th>
+                                <th>2025 Party</th>
+                                <th>Days Until</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="existingBirthdaysTable">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Birthday Form -->
+            <div class="card" id="addBirthdayCard">
+                <div class="chai-corner" onclick="openChaiModal()" title="Support with ChaiCheers!">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-plus"></i> Add New Birthday
+                    </h2>
+                </div>
+
+                <div class="privacy-notice">
+                    <i class="fas fa-info-circle"></i> <strong>Privacy Notice:</strong> Phone numbers are optional and kept private.
+                </div>
+
+                <form onsubmit="addBirthday(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Name *</label>
+                            <input type="text" class="form-input" name="name" required placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Birthday *</label>
+                            <input type="date" class="form-input" name="birthday" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" name="email" placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Phone Number 
+                                <span class="optional-badge">Optional</span>
+                            </label>
+                            <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <input type="text" class="form-input" name="notes" placeholder="Favorite gift ideas, hobbies, etc.">
+                    </div>
+
+                    <button type="submit" class="btn chai-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-birthday-cake"></i> Add Birthday
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chai Modal -->
+    <div class="modal" id="chaiModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-mug-hot"></i> Support Birthday Bash</h3>
+                <button class="close-btn" onclick="closeModal('chaiModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-mug-hot" style="font-size: 4rem; background: var(--chai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                    <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-top: 1rem;">This birthday reminder service is completely free! Support the developer to keep it running.</p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin: 2rem 0;">
+                    <button class="btn chai-btn" onclick="selectChaiAmount(25, this)">₹25</button>
+                    <button class="btn chai-btn selected" onclick="selectChaiAmount(50, this)">₹50</button>
+                    <button class="btn chai-btn" onclick="selectChaiAmount(100, this)">₹100</button>
+                </div>
+                <div style="background: linear-gradient(135deg, #fef3c7, #fed7aa); border: 1px solid #f59e0b; border-radius: var(--border-radius-md); padding: 1.5rem; margin: 1.5rem 0;">
+                    <p style="color: #92400e; margin-bottom: 0.5rem;"><strong><i class="fas fa-mobile-alt"></i> Developer UPI:</strong> 8341346818@ybl</p>
+                    <small style="color: var(--text-muted);">Your support keeps Birthday Bash free for everyone!</small>
+                </div>
+                <button class="btn chai-btn" onclick="processChaiPayment()" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                    <i class="fas fa-mug-hot"></i> ChaiCheers ₹<span id="selectedChaiAmount">50</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chai Button -->
+    <button class="floating-chai" onclick="openChaiModal()" title="Support Developer">
+        <i class="fas fa-mug-hot"></i>
+    </button>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+            <div>
+                <div style="font-weight: 600;" id="notificationTitle">Success</div>
+                <div style="font-size: 0.9rem; color: var(--text-muted);" id="notificationText">Action completed</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Existing birthday data
+        const existingBirthdays = [
+            { name: "Goutham", flat: "E2104", month: "Jan", day: 10, phone: "9052323232", party2025: "Yes" },
+            { name: "Ravindra", flat: "F1605", month: "Jan", day: 21, phone: "9160061456", party2025: "Yes" },
+            { name: "Nagi", flat: "J1701", month: "March", day: 1, phone: "7674014433", party2025: "Yes" },
+            { name: "Varun", flat: "B2308", month: "March", day: 8, phone: "7406269369", party2025: "Yes" },
+            { name: "Shiva Kaku", flat: "", month: "March", day: 23, phone: "9160730005", party2025: "No" },
+            { name: "Damoder", flat: "E901", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes" },
+            { name: "Mogili", flat: "A901", month: "May", day: 10, phone: "7337328671", party2025: "No" },
+            { name: "Raj", flat: "F1003", month: "Jun", day: 11, phone: "9949531325", party2025: "Yes" },
+            { name: "Srikanth", flat: "L904", month: "Jun", day: 15, phone: "9618567876", party2025: "Yes" },
+            { name: "Vijay", flat: "H1904", month: "July", day: 12, phone: "9000277757", party2025: "No" },
+            { name: "Srinivasu B", flat: "F1008", month: "Jul", day: 28, phone: "9160026888", party2025: "Yes" },
+            { name: "Chaitu", flat: "G1008", month: "Aug", day: 6, phone: "9704007409", party2025: "Yes" },
+            { name: "Ramesh", flat: "C2104", month: "Sep", day: 4, phone: "8886438888", party2025: "No" },
+            { name: "Bhargav", flat: "H505", month: "Sep", day: 25, phone: "8886178468", party2025: "No" },
+            { name: "Mohan", flat: "F408", month: "Jun", day: 1, phone: "9916666931", party2025: "No" },
+            { name: "Sandeep", flat: "M903", month: "Nov", day: 18, phone: "6303726803", party2025: "No" },
+            { name: "PD", flat: "C2306", month: "Nov", day: 19, phone: "8341346818", party2025: "No" },
+            { name: "Sanjay", flat: "I1202", month: "Nov", day: 30, phone: "9182001190", party2025: "No" },
+            { name: "Nagesh", flat: "F701", month: "Dec", day: 3, phone: "9908000038", party2025: "Yes" },
+            { name: "Suryprakash", flat: "I1903", month: "Dec", day: 6, phone: "", party2025: "No" },
+            { name: "Jagannadh", flat: "F906", month: "Dec", day: 16, phone: "9989044670", party2025: "Yes" }
+        ];
+
+        // Global variables
+        let birthdays = [];
+        let selectedChaiAmount = 50;
+        let phonesVisible = false;
+        let currentPartyFilter = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            displayExistingBirthdays();
+            loadBirthdays();
+            updateFilterStats();
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.filter-dropdown')) {
+                    document.querySelectorAll('.filter-content').forEach(content => {
+                        content.classList.remove('show');
+                    });
+                }
+            });
+        });
+
+        function displayExistingBirthdays() {
+            const tableBody = document.getElementById('existingBirthdaysTable');
+            
+            // Sort by next birthday
+            const sortedData = [...existingBirthdays]
+                .filter(b => b.month && b.day) // Only include valid dates
+                .sort((a, b) => {
+                    return getDaysUntilBirthday(a.month, a.day) - getDaysUntilBirthday(b.month, b.day);
+                });
+            
+            tableBody.innerHTML = sortedData.map((person, index) => {
+                const daysUntil = getDaysUntilBirthday(person.month, person.day);
+                const isToday = daysUntil === 0;
+                const isUpcoming = daysUntil > 0 && daysUntil <= 30;
+                
+                const rowColor = isToday ? 'background: var(--cake-gradient);' : 
+                                isUpcoming ? 'background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);' : 
+                                'background: white;';
+                
+                return `
+                    <tr style="${rowColor} border-bottom: 1px solid #e5e7eb;" 
+                        data-party="${person.party2025.toLowerCase()}">
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">${index + 1}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">
+                            ${isToday ? '<i class="fas fa-birthday-cake" style="color: var(--birthday-color);"></i> ' : ''}
+                            ${person.name}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.flat || '-'}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; font-weight: 600;">
+                            ${person.month} ${person.day}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <span class="phone-hidden" style="color: var(--text-muted);">
+                                ${person.phone ? '••••••••••' : '-'}
+                            </span>
+                            <span class="phone-visible" style="display: none;">${person.phone || '-'}</span>
+                            ${person.phone ? `<button class="phone-toggle" onclick="togglePhone(this)">
+                                <i class="fas fa-eye"></i>
+                            </button>` : ''}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <div class="party-status ${person.party2025.toLowerCase()}">
+                                ${person.party2025 === 'Yes' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>'}
+                                ${person.party2025}
+                            </div>
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center; font-weight: 700;">
+                            ${isToday ? 
+                                '<span style="color: var(--birthday-color);">TODAY! 🎉</span>' : 
+                                `<span style="color: ${daysUntil <= 30 ? 'var(--success-color)' : 'var(--text-muted)'};">${daysUntil} days</span>`}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <button class="btn btn-primary" onclick="requestCorrection('${person.name}')" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                <i class="fas fa-edit"></i> Fix
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Add entries without dates at the bottom
+            const noDateEntries = existingBirthdays.filter(b => !b.month || !b.day);
+            if (noDateEntries.length > 0) {
+                tableBody.innerHTML += noDateEntries.map((person, index) => `
+                    <tr style="background: #f8f9fa; opacity: 0.7;" 
+                        data-party="${person.party2025.toLowerCase()}">
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${sortedData.length + index + 1}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.name}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">${person.flat || '-'}</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; color: var(--text-muted);">Date TBD</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">
+                            <span class="phone-hidden">${person.phone ? '••••••••••' : '-'}</span>
+                            <span class="phone-visible" style="display: none;">${person.phone || '-'}</span>
+                            ${person.phone ? `<button class="phone-toggle" onclick="togglePhone(this)">
+                                <i class="fas fa-eye"></i>
+                            </button>` : ''}
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <div class="party-status ${person.party2025.toLowerCase()}">
+                                ${person.party2025 === 'Yes' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>'}
+                                ${person.party2025}
+                            </div>
+                        </td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">-</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd; text-align: center;">
+                            <button class="btn btn-primary" onclick="requestCorrection('${person.name}')" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                <i class="fas fa-edit"></i> Fix
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            updateFilterStats();
+        }
+
+        function toggleFilter(filterId) {
+            const content = document.getElementById(filterId);
+            const isVisible = content.classList.contains('show');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.filter-content').forEach(c => c.classList.remove('show'));
+            
+            // Toggle current dropdown
+            if (!isVisible) {
+                content.classList.add('show');
+            }
+        }
+
+        function selectPartyFilter(status) {
+            currentPartyFilter = status;
+            
+            // Update button text
+            const statusText = status === 'all' ? 'All Status' : 
+                             status === 'yes' ? 'Party Given' : 'Party Not Given';
+            document.getElementById('selectedPartyFilter').textContent = statusText;
+            
+            // Update selected option
+            document.querySelectorAll('#partyFilter .filter-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // Close dropdown
+            document.getElementById('partyFilter').classList.remove('show');
+            
+            // Apply filter
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const rows = document.querySelectorAll('#existingBirthdaysTable tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const partyStatus = row.dataset.party;
+                
+                let showRow = true;
+                
+                // Apply party filter
+                if (currentPartyFilter !== 'all' && partyStatus !== currentPartyFilter) {
+                    showRow = false;
+                }
+                
+                if (showRow) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            updateFilterStats(visibleCount);
+        }
+
+        function clearAllFilters() {
+            currentPartyFilter = 'all';
+            
+            // Reset button text
+            document.getElementById('selectedPartyFilter').textContent = 'All Status';
+            
+            // Reset selected option
+            document.querySelectorAll('#partyFilter .filter-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector('#partyFilter .filter-option').classList.add('selected');
+            
+            // Show all rows
+            document.querySelectorAll('#existingBirthdaysTable tr').forEach(row => {
+                row.style.display = '';
+            });
+            
+            updateFilterStats(existingBirthdays.length);
+            
+            showNotification('Filters Cleared', 'All filters have been reset successfully.', 'success');
+        }
+
+        function updateFilterStats(visible = null) {
+            const total = existingBirthdays.length;
+            const visibleCount = visible !== null ? visible : 
+                document.querySelectorAll('#existingBirthdaysTable tr:not([style*="display: none"])').length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('visibleCount').textContent = visibleCount;
+        }
+
+        function getDaysUntilBirthday(month, day) {
+            if (!month || !day) return 999; // Invalid dates go to end
+            
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            
+            // Month mapping
+            const monthMap = {
+                'Jan': 0, 'January': 0,
+                'Feb': 1, 'February': 1,
                 'Mar': 2, 'March': 2,
                 'Apr': 3, 'April': 3,
                 'May': 4,
@@ -60,93 +1140,13 @@
             toggleText.textContent = phonesVisible ? 'Hide All Phones' : 'Show All Phones';
             
             // Update all button icons
-            document.querySelectorAll('.phone-hidden').forEach(hidden => {
-                const button = hidden.parentElement.querySelector('button i');
-                if (button) {
-                    button.className = phonesVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
-                }
+            document.querySelectorAll('.phone-toggle i').forEach(icon => {
+                icon.className = phonesVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
             });
         }
 
-        function openCorrectionModal(index) {
-            const sortedData = [...existingBirthdays]
-                .filter(b => b.month && b.day)
-                .sort((a, b) => getDaysUntilBirthday(a.month, a.day) - getDaysUntilBirthday(b.month, b.day));
-            
-            const noDateEntries = existingBirthdays.filter(b => !b.month || !b.day);
-            const allSorted = [...sortedData, ...noDateEntries];
-            const person = allSorted[index];
-            
-            if (!person) return;
-            
-            // Populate correction form
-            document.getElementById('correctionPersonName').textContent = person.name;
-            document.getElementById('correctionPersonDetails').textContent = 
-                `Flat: ${person.flat || 'N/A'} | Birthday: ${person.month ? person.month + ' ' + person.day : 'TBD'}`;
-            
-            // Store person data for submission
-            document.getElementById('correctionModal').dataset.personData = JSON.stringify(person);
-            
-            // Open modal
-            document.getElementById('correctionModal').classList.add('active');
-        }
-
-        function submitCorrection(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(event.target);
-            const personData = JSON.parse(document.getElementById('correctionModal').dataset.personData);
-            
-            const correctionRequest = {
-                person: personData,
-                correctionType: formData.get('correctionType'),
-                correctedValue: formData.get('correctedValue'),
-                additionalNotes: formData.get('additionalNotes'),
-                submittedBy: formData.get('submittedBy') || 'Anonymous',
-                submittedAt: new Date().toISOString()
-            };
-            
-            // Send email to admin (simulated - needs backend)
-            sendCorrectionEmail(correctionRequest);
-            
-            // Close modal and reset form
-            closeModal('correctionModal');
-            event.target.reset();
-            
-            showNotification('Correction Requested', 
-                `Your correction request for ${personData.name} has been sent to the admin.`, 
-                'success');
-        }
-
-        function sendCorrectionEmail(correctionRequest) {
-            // This simulates sending an email - in production, this would call a backend API
-            const emailContent = `
-BIRTHDAY LIST CORRECTION REQUEST
-================================
-
-Person: ${correctionRequest.person.name}
-Current Flat: ${correctionRequest.person.flat || 'N/A'}
-Current Birthday: ${correctionRequest.person.month ? correctionRequest.person.month + ' ' + correctionRequest.person.day : 'TBD'}
-Current Phone: ${correctionRequest.person.phone || 'N/A'}
-
-CORRECTION DETAILS
-==================
-Field to Correct: ${correctionRequest.correctionType}
-Corrected Value: ${correctionRequest.correctedValue}
-
-Additional Notes:
-${correctionRequest.additionalNotes || 'None'}
-
-Submitted By: ${correctionRequest.submittedBy}
-Submitted At: ${new Date(correctionRequest.submittedAt).toLocaleString()}
-
----
-This is an automated correction request from Birthday Bash.
-            `;
-            
-            console.log('=== EMAIL TO: priyadarshan.iitk@gmail.com ===');
-            console.log(emailContent);
-            console.log('===========================================');
+        function requestCorrection(name) {
+            showNotification('Correction Requested', `Request to correct ${name}'s data has been sent to admin.`, 'success');
         }
 
         function addBirthday(event) {
@@ -165,196 +1165,14 @@ This is an automated correction request from Birthday Bash.
             
             birthdays.push(birthday);
             saveBirthdays();
-            displayBirthdays();
             
             // Reset form
             event.target.reset();
             
-            // Send notification email (simulated)
-            sendBirthdayNotification(birthday);
-            
-            showNotification('Birthday Added!', `${birthday.name}'s birthday has been added successfully.`, 'success');
-        }
-
-        function displayBirthdays() {
-            const listContainer = document.getElementById('birthdayList');
-            const upcomingContainer = document.getElementById('upcomingList');
-            
-            if (birthdays.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-birthday-cake"></i>
-                        <p>No birthdays added yet. Add your first birthday above!</p>
-                    </div>
-                `;
-                upcomingContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar"></i>
-                        <p style="font-size: 0.9rem;">No upcoming birthdays</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Sort by next birthday
-            const sortedBirthdays = [...birthdays].sort((a, b) => {
-                return getDaysUntil(a.birthday) - getDaysUntil(b.birthday);
-            });
-            
-            // Display all birthdays
-            listContainer.innerHTML = sortedBirthdays.map(birthday => {
-                const daysUntil = getDaysUntil(birthday.birthday);
-                const isToday = daysUntil === 0;
-                const isUpcoming = daysUntil > 0 && daysUntil <= 30;
-                
-                return `
-                    <div class="birthday-item ${isToday ? 'today' : isUpcoming ? 'upcoming' : ''}">
-                        <div class="birthday-header">
-                            <div class="birthday-name">
-                                ${isToday ? '<i class="fas fa-birthday-cake"></i>' : '<i class="fas fa-user"></i>'}
-                                ${birthday.name}
-                            </div>
-                            <div class="birthday-date">${formatDate(birthday.birthday)}</div>
-                        </div>
-                        ${birthday.notes ? `<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;"><i class="fas fa-sticky-note"></i> ${birthday.notes}</div>` : ''}
-                        <div class="birthday-countdown">
-                            ${isToday ? '🎉 <strong>TODAY!</strong>' : daysUntil > 0 ? `In ${daysUntil} day${daysUntil > 1 ? 's' : ''}` : `${Math.abs(daysUntil)} day${Math.abs(daysUntil) > 1 ? 's' : ''} ago`}
-                        </div>
-                        <div class="birthday-actions">
-                            <button class="action-btn edit" onclick="editBirthday('${birthday.id}')">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="action-btn delete" onclick="deleteBirthday('${birthday.id}')">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            // Display upcoming birthdays (next 30 days)
-            const upcoming = sortedBirthdays.filter(b => {
-                const days = getDaysUntil(b.birthday);
-                return days >= 0 && days <= 30;
-            });
-            
-            if (upcoming.length > 0) {
-                upcomingContainer.innerHTML = upcoming.map(birthday => `
-                    <div class="upcoming-item">
-                        <div class="upcoming-name">${birthday.name}</div>
-                        <div class="upcoming-date">
-                            ${formatDate(birthday.birthday)} - ${getDaysUntil(birthday.birthday) === 0 ? 'Today!' : `in ${getDaysUntil(birthday.birthday)} days`}
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                upcomingContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar"></i>
-                        <p style="font-size: 0.9rem;">No birthdays in the next 30 days</p>
-                    </div>
-                `;
-            }
-            
-            updateStats();
-        }
-
-        function updateStats() {
-            document.getElementById('birthdayCount').textContent = `${birthdays.length} birthday${birthdays.length !== 1 ? 's' : ''}`;
-            document.getElementById('totalBirthdays').textContent = birthdays.length;
-            
-            const thisMonth = birthdays.filter(b => {
-                const bDate = new Date(b.birthday);
-                const now = new Date();
-                return bDate.getMonth() === now.getMonth();
-            }).length;
-            
-            document.getElementById('thisMonth').textContent = thisMonth;
-        }
-
-        function getDaysUntil(birthdayStr) {
-            const today = new Date();
-            const birthday = new Date(birthdayStr);
-            
-            // Set birthday to this year
-            birthday.setFullYear(today.getFullYear());
-            
-            // If birthday has passed this year, use next year
-            if (birthday < today) {
-                birthday.setFullYear(today.getFullYear() + 1);
-            }
-            
-            const diffTime = birthday - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            return diffDays;
-        }
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-
-        function deleteBirthday(id) {
-            if (confirm('Are you sure you want to delete this birthday?')) {
-                birthdays = birthdays.filter(b => b.id !== id);
-                saveBirthdays();
-                displayBirthdays();
-                showNotification('Deleted', 'Birthday has been removed.', 'success');
-            }
-        }
-
-        function editBirthday(id) {
-            const birthday = birthdays.find(b => b.id === id);
-            if (!birthday) return;
-            
-            // Populate form
-            document.querySelector('input[name="name"]').value = birthday.name;
-            document.querySelector('input[name="birthday"]').value = birthday.birthday;
-            document.querySelector('input[name="email"]').value = birthday.email;
-            document.querySelector('input[name="phone"]').value = birthday.phone;
-            document.querySelector('input[name="notes"]').value = birthday.notes;
-            
-            // Delete old entry
-            birthdays = birthdays.filter(b => b.id !== id);
-            saveBirthdays();
-            displayBirthdays();
-            
-            // Scroll to form
-            scrollToForm();
-            
-            showNotification('Edit Mode', 'Update the details and click Add Birthday.', 'success');
-        }
-
-        function checkBirthdayReminders() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            birthdays.forEach(birthday => {
-                const bDate = new Date(birthday.birthday);
-                bDate.setFullYear(tomorrow.getFullYear());
-                
-                if (bDate.toDateString() === tomorrow.toDateString()) {
-                    sendReminderEmail(birthday);
-                }
-            });
-        }
-
-        function sendBirthdayNotification(birthday) {
-            // This would send email via backend service
-            console.log('Sending notification email to priyadarshan.iitk@gmail.com');
-            console.log('New birthday added:', birthday);
-        }
-
-        function sendReminderEmail(birthday) {
-            // This would send reminder email via backend service
-            console.log('Sending reminder email to priyadarshan.iitk@gmail.com');
-            console.log('Reminder for:', birthday.name, 'Birthday tomorrow!');
+            showNotification('Birthday Added!', `${birthday.name}'s birthday has been added successfully.', 'success');
         }
 
         function saveBirthdays() {
-            // In production, save to backend
-            // For demo, using in-memory storage
             localStorage.setItem('birthdays', JSON.stringify(birthdays));
         }
 
@@ -362,7 +1180,6 @@ This is an automated correction request from Birthday Bash.
             const saved = localStorage.getItem('birthdays');
             if (saved) {
                 birthdays = JSON.parse(saved);
-                displayBirthdays();
             }
         }
 
@@ -381,7 +1198,7 @@ This is an automated correction request from Birthday Bash.
 
         function selectChaiAmount(amount, element) {
             selectedChaiAmount = amount;
-            document.querySelectorAll('.chai-amount').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.chai-btn').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
             document.getElementById('selectedChaiAmount').textContent = amount;
         }
