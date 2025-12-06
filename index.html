@@ -1,184 +1,29 @@
-// ==============================
-// Birthday Notifier – Full Stack
-// Frontend (React) + Backend (Node.js + Express + Cron + Nodemailer)
-// ==============================
-// This single file shows the complete structure for your website.
-// Split into files when implementing.
-
-/* ==============================
-   BACKEND: server.js
-   ============================== */
-
-// Install dependencies:
-// npm install express nodemailer node-cron cors body-parser
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const cron = require('node-cron');
-const nodemailer = require('nodemailer');
-const fs = require('fs');
-
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-// Store birthdays locally in JSON file
-const DATA_FILE = './birthdays.json';
-if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, JSON.stringify([]));
-
-// Email transporter (use Gmail)
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'pdcind369@gmail.com', // sender
-    pass: 'YOUR_APP_PASSWORD',  // Gmail app password
-  },
-});
-
-// API: Add birthday
-app.post('/add-birthday', (req, res) => {
-  const { name, date } = req.body;
-  const birthdays = JSON.parse(fs.readFileSync(DATA_FILE));
-  birthdays.push({ name, date });
-  fs.writeFileSync(DATA_FILE, JSON.stringify(birthdays, null, 2));
-  res.json({ success: true });
-});
-
-// Daily cron at 11:59 PM → send at midnight
-cron.schedule('59 23 * * *', () => {
-  const today = new Date();
-  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-  const day = String(tomorrow.getDate()).padStart(2, '0');
-  const mmdd = `${month}-${day}`;
-
-  const birthdays = JSON.parse(fs.readFileSync(DATA_FILE));
-
-  birthdays.forEach((b) => {
-    if (b.date.endsWith(mmdd)) {
-      transporter.sendMail({
-        to: 'pdcind369@gmail.com',
-        subject: `Birthday Reminder: ${b.name}`,
-        text: `Reminder: It's ${b.name}'s birthday tomorrow!`,
-      });
-    }
-  });
-});
-
-app.listen(4000, () => console.log('Server running on port 4000'));
-
-
-/* ==============================
-   FRONTEND: Simple React App (App.js)
-   ============================== */
-
-// Use: npx create-react-app birthday-app
-// Replace src/App.js content with below
-
-import React, { useState } from 'react';
-import axios from 'axios';
-
-export default function App() {
-  const [name, setName] = useState('');
-  const [date, setDate] = useState('');
-
-  const addBirthday = async () => {
-    await axios.post('http://localhost:4000/add-birthday', { name, date });
-    alert('Birthday saved! Email notification will be sent every year.');
-  };
-
-  return (
-    <div className="p-6 max-w-md mx-auto bg-white shadow rounded-xl mt-10">
-      <h1 className="text-2xl font-bold mb-4">Birthday Notifier</h1>
-
-      <input
-        type="text"
-        placeholder="Name"
-        className="border p-2 w-full mb-3"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <input
-        type="date"
-        className="border p-2 w-full mb-3"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-
-      <button
-        onClick={addBirthday}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Save Birthday
-      </button>
-    </div>
-  );
-}
-
-
-/* ==============================
-   birthdays.json (auto-created)
-   ============================== */
-[]
-
-
-/* ==============================
-   HOW IT WORKS
-   ============================== */
-// ✔ You visit website → enter Name + DOB
-// ✔ Backend stores it in birthdays.json
-// ✔ Cron job checks daily at 11:59 PM
-// ✔ If tomorrow is someone's birthday → email goes to pdcind369@gmail.com
-// ✔ Automatic yearly midnight reminders
-
-
-/* ==============================
-   NEXT STEPS FOR YOU
-   ============================== */
-// Replace YOUR_APP_PASSWORD with a Gmail App Password
-// (Google Account → Security → App Passwords)
-
-// Run backend:
-//   node server.js
-
-// Run frontend:
-//   npm start
-
-// Your website will now work perfectly end‑to‑end.
-
-/* ==============================
-   DASHBOARD UPGRADE (Option B)
-   ============================== */
-
-// --- Replace the existing index.html section with the following enhanced dashboard version ---
-
-// (NOTE: Copy this entire HTML and replace the current index.html in /public/)
-
-// DASHBOARD HTML STARTS HERE
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Birthday Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    :root{--card:#fff;--muted:#6b7280;--accent1:#667eea;--accent2:#764ba2}
     body{font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#f6f8fb,#e9eef8);margin:0;padding:20px}
-    .container{max-width:950px;margin:0 auto}
+    .container{max-width:980px;margin:0 auto}
     header{display:flex;align-items:center;gap:12px}
     h1{font-size:1.8rem;margin:0}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(20,30,60,0.08);margin-top:18px}
-    .section-title{font-size:1.2rem;font-weight:600;margin-bottom:10px}
-    .muted{color:#6b7280;font-size:0.95rem}
-    .highlight{background:#fff4d2}
-    input,button{padding:10px;border-radius:8px;border:1px solid #e6eef8;font-size:0.95rem}
-    button{cursor:pointer;background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;border:none}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(20,30,60,0.06);margin-top:18px}
+    .section-title{font-size:1.1rem;font-weight:600;margin-bottom:10px}
+    .muted{color:var(--muted);font-size:0.95rem}
+    input,button,select,textarea{padding:10px;border-radius:8px;border:1px solid #e6eef8;font-size:0.95rem}
+    button{cursor:pointer;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none}
     table{width:100%;border-collapse:collapse;margin-top:12px}
     th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left}
-    .pill{display:inline-block;padding:6px 10px;background:#eaf2ff;border-radius:20px;font-size:0.85rem;margin-right:8px}
+    .pill{display:inline-block;padding:6px 10px;background:#eaf2ff;border-radius:20px;font-size:0.9rem;margin-right:8px}
+    .flex{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .muted-sm{color:#9aa3b2;font-size:0.85rem}
+    .danger{background:linear-gradient(90deg,#ffecd2,#fcb69f)}
+    .small-btn{padding:6px 10px;border-radius:8px;background:#fff;border:1px solid #e6eef8;cursor:pointer}
+    .hidden{display:none}
   </style>
 </head>
 <body>
@@ -187,157 +32,250 @@ export default function App() {
       <div style="font-size:2.2rem">🎂</div>
       <div>
         <h1>Birthday Dashboard</h1>
-        <div class="muted">Today's birthdays, upcoming birthdays, and full list — same clean design</div>
+        <div class="muted">Today's birthdays, upcoming birthdays and the full list. Midnight email reminders (server-side).</div>
       </div>
     </header>
 
     <!-- Add Birthday Form -->
-    <div class="card">
+    <div class="card" id="formCard">
       <div class="section-title">Add Birthday</div>
-      <form id="addForm">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <input type="text" id="name" placeholder="Full name" style="flex:2">
-          <input type="date" id="date" style="flex:1">
-          <input type="tel" id="phone" placeholder="Phone" style="flex:1">
-        </div>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <input type="email" id="email" placeholder="Email">
-          <input type="text" id="notes" placeholder="Notes (optional)">
-          <button type="submit">Save</button>
+      <form id="addForm" class="flex" autocomplete="off">
+        <input type="text" id="name" placeholder="Full name" style="flex:2" required>
+        <input type="date" id="date" style="flex:1" required>
+        <input type="tel" id="phone" placeholder="Phone (optional)" style="flex:1">
+        <input type="email" id="email" placeholder="Email (optional)" style="flex:1">
+        <input type="text" id="notes" placeholder="Notes (optional)" style="flex:2">
+        <div style="width:100%;display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+          <button id="saveBtn" type="submit">Save</button>
+          <button id="importSample" type="button" class="small-btn">Import Sample</button>
         </div>
       </form>
+      <div id="formMsg" class="muted-sm" style="margin-top:8px"></div>
     </div>
 
-    <!-- TODAY'S BIRTHDAYS -->
+    <!-- Today's birthdays -->
     <div class="card">
       <div class="section-title">🎉 Today's Birthdays</div>
-      <div id="todayList" class="muted">Checking…</div>
+      <div id="todayList" class="muted">Checking...</div>
     </div>
 
-    <!-- UPCOMING BIRTHDAYS -->
+    <!-- Upcoming -->
     <div class="card">
       <div class="section-title">📅 Upcoming (Next 30 Days)</div>
-      <div id="upcomingList" class="muted">Loading…</div>
+      <div id="upcomingList" class="muted">Loading...</div>
     </div>
 
-    <!-- FULL LIST -->
+    <!-- Full list -->
     <div class="card">
       <div class="section-title">📘 All Birthdays</div>
-      <input id="search" placeholder="Search name…" style="width:100%;margin-bottom:12px">
-      <table id="allTable" style="display:none">
-        <thead><tr><th>#</th><th>Name</th><th>Date</th><th>Phone</th><th>Email</th><th>Notes</th><th></th></tr></thead>
+      <div style="display:flex;gap:12px;margin-bottom:10px">
+        <input id="search" placeholder="Search name…" style="flex:1">
+        <button id="refresh" class="small-btn">Refresh</button>
+      </div>
+
+      <div id="allEmpty" class="muted">Loading…</div>
+      <table id="allTable" class="hidden">
+        <thead><tr><th>#</th><th>Name</th><th>Date</th><th>Phone</th><th>Email</th><th>Notes</th><th>Action</th></tr></thead>
         <tbody id="allTbody"></tbody>
       </table>
-      <div id="allEmpty" class="muted">Loading…</div>
     </div>
+
+    <div style="margin-top:12px" class="muted">Tip: Keep the Node server running so midnight emails are delivered (cron runs at 00:00 IST).</div>
   </div>
 
 <script>
+/* ---------- Helpers ---------- */
+function log(v){ console.log('[Dashboard]',v); }
 function formatMMDD(dateStr){
+  if(!dateStr) return null;
+  dateStr = dateStr.trim();
+  // Expected from form: YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
+    const parts = dateStr.split('-'); // [YYYY,MM,DD]
+    return parts[1] + '-' + parts[2];
+  }
+  // fallback for other formats
   if(dateStr.includes('-')){
-    let p=dateStr.split('-');
-    if(p.length===3) return p[1]+'-'+p[2];
+    const p = dateStr.split('-');
     if(p.length===2) return p[0]+'-'+p[1];
+    if(p.length===3) return p[1]+'-'+p[2];
   }
   if(dateStr.includes('/')){
-    let p=dateStr.split('/');
+    const p = dateStr.split('/');
     return p[0]+'-'+p[1];
   }
   return null;
 }
-
-function mmddToDate(mmdd){
-  let [m,d]=mmdd.split('-');
-  return new Date(new Date().getFullYear(),m-1,d);
+function mmddToDate(mmdd, anchorYear){
+  const [m,d] = mmdd.split('-').map(s=>parseInt(s,10));
+  const year = typeof anchorYear === 'number' ? anchorYear : (new Date()).getFullYear();
+  return new Date(year, m-1, d);
+}
+function diffDaysFromToday(dateObj){
+  const now = new Date(); now.setHours(0,0,0,0);
+  const d = new Date(dateObj); d.setHours(0,0,0,0);
+  return Math.round((d - now) / (1000*60*60*24));
 }
 
-function diffDays(date){
-  let now=new Date();
-  now.setHours(0,0,0,0);
-  let d=new Date(date);
-  d.setHours(0,0,0,0);
-  return (d-now)/(1000*3600*24);
+/* ---------- API ---------- */
+async function api(path, opts){
+  const res = await fetch(path, opts);
+  if(!res.ok) {
+    const text = await res.text();
+    throw new Error(`${res.status} ${res.statusText} - ${text}`);
+  }
+  return res.json();
 }
 
-async function load(){
-  const res=await fetch('/api/birthdays');
-  const data=await res.json();
+/* ---------- UI actions ---------- */
+async function loadData(){
+  try {
+    const data = await api('/api/birthdays');
+    log('Loaded', data.length, 'items');
+    renderAll(data);
+    renderTodayAndUpcoming(data);
+  } catch(err){
+    console.error('Load error', err);
+    document.getElementById('allEmpty').textContent = 'Error loading data. Check server console.';
+  }
+}
 
-  // sort by date order (month/day)
+function renderAll(data){
+  const tbody = document.getElementById('allTbody');
+  tbody.innerHTML = '';
+  if(!data.length){
+    document.getElementById('allEmpty').textContent = 'No birthdays yet. Add one above.';
+    document.getElementById('allTable').classList.add('hidden');
+    return;
+  }
+  document.getElementById('allEmpty').style.display = 'none';
+  document.getElementById('allTable').classList.remove('hidden');
+
+  // Sort by month-day
   data.sort((a,b)=>{
-    let da=formatMMDD(a.date), db=formatMMDD(b.date);
-    return da.localeCompare(db);
+    const A = formatMMDD(a.date) || '12-31';
+    const B = formatMMDD(b.date) || '12-31';
+    return A.localeCompare(B);
   });
 
-  const today=new Date();
-  const mm=String(today.getMonth()+1).padStart(2,'0');
-  const dd=String(today.getDate()).padStart(2,'0');
-  const todayMMDD=mm+'-'+dd;
-
-  // Today
-  let tlist=data.filter(b=>formatMMDD(b.date)===todayMMDD);
-  const tdiv=document.getElementById('todayList');
-  if(!tlist.length) tdiv.textContent='No birthdays today'; else tdiv.innerHTML=tlist.map(t=>`<div class='pill'>${t.name}</div>`).join('');
-
-  // Upcoming (next 30 days)
-  let upcoming=data.filter(b=>{
-    let mmdd=formatMMDD(b.date);
-    let dt=mmddToDate(mmdd);
-    let d=diffDays(dt);
-    return d>0 && d<=30;
-  });
-  const up=document.getElementById('upcomingList');
-  if(!upcoming.length) up.textContent='No upcoming birthdays'; else up.innerHTML=upcoming.map(u=>`<div class='pill'>${u.name} • ${u.date}</div>`).join('');
-
-  // Full list
-  const tbody=document.getElementById('allTbody');
-  tbody.innerHTML='';
   data.forEach((b,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${i+1}</td><td>${b.name}</td><td>${b.date}</td><td>${b.phone||'-'}</td><td>${b.email||'-'}</td><td>${b.notes||'-'}</td>
-      <td><button data-id='${b.id}' class='del'>Delete</button></td>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td>
+      <td>${escapeHtml(b.name)}</td>
+      <td>${b.date}</td>
+      <td>${escapeHtml(b.phone||'-')}</td>
+      <td>${escapeHtml(b.email||'-')}</td>
+      <td>${escapeHtml(b.notes||'-')}</td>
+      <td><button class="small-btn del" data-id="${b.id}">Delete</button></td>`;
     tbody.appendChild(tr);
   });
 
-  if(data.length){
-    document.getElementById('allEmpty').style.display='none';
-    document.getElementById('allTable').style.display='';
-  }
-
-  // Delete function
   document.querySelectorAll('.del').forEach(btn=>{
-    btn.onclick=async()=>{
-      await fetch('/api/birthdays/'+btn.dataset.id,{method:'DELETE'});
-      load();
-    }
+    btn.onclick = async () => {
+      if(!confirm('Delete this entry?')) return;
+      await api('/api/birthdays/' + btn.dataset.id, { method: 'DELETE' });
+      loadData();
+    };
   });
 
-  // Search
-  document.getElementById('search').oninput=e=>{
-    let v=e.target.value.toLowerCase();
+  // search
+  const search = document.getElementById('search');
+  search.oninput = () => {
+    const v = search.value.toLowerCase();
     [...tbody.children].forEach(row=>{
-      row.style.display=row.children[1].textContent.toLowerCase().includes(v)?'':'none';
+      const name = row.children[1].textContent.toLowerCase();
+      row.style.display = name.includes(v) ? '' : 'none';
     });
   };
 }
 
-// Add form
-const form=document.getElementById('addForm');
-form.onsubmit=async(e)=>{
+function renderTodayAndUpcoming(data){
+  const todayDiv = document.getElementById('todayList');
+  const upcomingDiv = document.getElementById('upcomingList');
+
+  const today = new Date();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  const todayMMDD = mm + '-' + dd;
+
+  const listToday = data.filter(b => formatMMDD(b.date) === todayMMDD);
+  if(listToday.length === 0) {
+    todayDiv.textContent = 'No birthdays today';
+  } else {
+    todayDiv.innerHTML = listToday.map(t => `<span class="pill">${escapeHtml(t.name)}</span>`).join('');
+  }
+
+  // upcoming next 30 days (exclude today)
+  const upcoming = data.filter(b => {
+    const mmdd = formatMMDD(b.date);
+    if(!mmdd) return false;
+    // create next occurrence (may be this year or next)
+    let candidate = mmddToDate(mmdd);
+    // if candidate is earlier than today, move to next year
+    if(diffDaysFromToday(candidate) < 0) candidate.setFullYear(candidate.getFullYear() + 1);
+    const dDays = diffDaysFromToday(candidate);
+    return dDays > 0 && dDays <= 30;
+  }).sort((a,b)=>{
+    const A = mmddToDate(formatMMDD(a.date));
+    const B = mmddToDate(formatMMDD(b.date));
+    return A - B;
+  });
+
+  upcomingDiv.innerHTML = upcoming.length ? upcoming.map(u => `<div style="margin-bottom:8px"><strong>${escapeHtml(u.name)}</strong> • ${u.date}</div>`).join('') : 'No upcoming birthdays';
+}
+
+/* ---------- Form submit ---------- */
+document.getElementById('addForm').onsubmit = async function(e){
   e.preventDefault();
-  const name=document.getElementById('name').value.trim();
-  const date=document.getElementById('date').value;
-  const phone=document.getElementById('phone').value;
-  const email=document.getElementById('email').value;
-  const notes=document.getElementById('notes').value;
-  if(!name||!date) return alert('Name + date required');
-  await fetch('/api/birthdays',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,date,phone,email,notes})});
-  form.reset();
-  load();
+  const name = document.getElementById('name').value.trim();
+  const date = document.getElementById('date').value;
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+  if(!name || !date) {
+    document.getElementById('formMsg').textContent = 'Name and date required';
+    return;
+  }
+  document.getElementById('formMsg').textContent = 'Saving...';
+  try {
+    await api('/api/birthdays', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, date, phone, email, notes })
+    });
+    document.getElementById('formMsg').textContent = 'Saved ✔';
+    document.getElementById('addForm').reset();
+    setTimeout(()=> document.getElementById('formMsg').textContent = '', 2500);
+    loadData();
+  } catch(err){
+    document.getElementById('formMsg').textContent = 'Save failed. Open server console.';
+    console.error(err);
+  }
 };
 
-load();
+/* ---------- Import sample (for quick testing) ---------- */
+document.getElementById('importSample').onclick = async function(){
+  const sample = [
+    {"id":"s1","name":"Goutham","date":"2026-01-10","phone":"9052323232","email":"","notes":"E2104"},
+    {"id":"s2","name":"Ravindra","date":"2026-01-21","phone":"9160061456","email":"","notes":"F1605"},
+    {"id":"s3","name":"Chaitu","date":"2026-08-06","phone":"9704007409","email":"","notes":"G1008"},
+    {"id":"s4","name":"Sandeep","date":"2026-11-18","phone":"6303726803","email":"","notes":"M903"}
+  ];
+  await api('/api/import-sample', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ sample }) });
+  loadData();
+};
+
+/* ---------- Refresh button ---------- */
+document.getElementById('refresh').onclick = loadData;
+
+/* ---------- Utilities ---------- */
+function escapeHtml(s){
+  if(!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------- Init ---------- */
+loadData();
 </script>
 </body>
 </html>
-// DASHBOARD HTML ENDS HERE
