@@ -1,28 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Birthday Bash – never miss a birthday again</title>
-<meta name="theme-color" content="#667eea" />
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQmlydGhkYXkgQmFzaCIsInNob3J0X25hbWUiOiJCaXJ0aGRheSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZjVmN2ZhIiwiY29sb3IiOiIjNjY3ZWVhIn0=" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y=".9em" font-size="90">🎂</text></svg>" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Birthday Bash – JSON edition</title>
 <style>
 :root{
-  --pri: #667eea; --sec: #764ba2; --success: #00f2fe; --danger: #f5576c;
-  --bg: #ffffff; --bg2: #f7fafc; --text: #2d3748; --muted: #718096;
-  --radius: 12px; --shadow: 0 4px 12px rgba(0,0,0,.1);
-  --trans: .25s ease;
+  --pri:#667eea; --sec:#764ba2; --bg:#fff; --bg2:#f7fafc; --text:#2d3748; --muted:#718096;
+  --radius:12px; --shadow:0 4px 12px rgba(0,0,0,.1);
+  font-family:Poppins,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
-*,*::before,*::after{box-sizing:border-box; margin:0; padding:0}
-body{font-family:Poppins,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.6; color:var(--text); background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); min-height:100vh}
-h1,h2,h3{font-weight:600}
-a,button,input,textarea{font-family:inherit; font-size:1rem}
-button{cursor:pointer; border:none}
+*{box-sizing:border-box; margin:0; padding:0}
+body{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); min-height:100vh; color:var(--text); line-height:1.6}
 .container{max-width:1200px; margin:0 auto; padding:0 1rem}
 .card{background:var(--bg); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.5rem; margin-bottom:1.5rem}
-.btn{display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.25rem; border-radius:var(--radius); font-weight:600; transition:var(--trans)}
+.btn{display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:none; border-radius:var(--radius); font-weight:600; cursor:pointer; transition:.25s ease}
 .btn-primary{background:var(--pri); color:#fff}
 .btn-primary:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(102,126,234,.4)}
 .chai-btn{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff}
@@ -30,16 +22,10 @@ button{cursor:pointer; border:none}
 .header{position:sticky; top:0; z-index:100; background:linear-gradient(135deg,var(--pri) 0%,var(--sec) 100%); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .nav{display:flex; justify-content:space-between; align-items:center; padding:1rem 0}
 .logo{font-family:Pacifico,cursive; font-size:1.75rem; display:flex; align-items:center; gap:.5rem}
-.logo i{font-size:2rem; animation:bounce 2s infinite}
-@keyframes bounce{50%{transform:translateY(-6px)}}
-.hero{text-align:center; padding:3rem 0; background:linear-gradient(135deg,#f093fb 0%,var(--danger) 100%); color:#fff; position:relative; overflow:hidden}
-.hero::before{content:'🎂🎉🎈🎁🎊'; position:absolute; top:50%; left:-10%; font-size:3rem; opacity:.1; animation:float 20s linear infinite}
-@keyframes float{to{left:110%}}
+.hero{text-align:center; padding:3rem 0; background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%); color:#fff}
 .hero h1{font-size:2.75rem; margin-bottom:.5rem}
-.hero p{font-size:1.1rem; margin-bottom:1.5rem}
-.table-wrap{overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow)}
-table{width:100%; border-collapse:collapse; font-size:.9rem}
-th{background:linear-gradient(135deg,var(--pri) 0%,var(--sec) 100%); color:#fff; padding:.75rem; text-align:left; position:sticky; top:0; z-index:10; cursor:pointer; user-select:none}
+table{width:100%; border-collapse:collapse; font-size:.9rem; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow)}
+th{background:var(--pri); color:#fff; padding:.75rem; text-align:left; cursor:pointer}
 td{padding:.75rem; border-bottom:1px solid #e2e8f0}
 tr:nth-child(even){background:var(--bg2)}
 tr:hover{background:#e9ecef}
@@ -48,43 +34,33 @@ tr:hover{background:#e9ecef}
 .status.no{background:#ef4444; color:#fff}
 .today{background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%)}
 .upcoming{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%)}
-form{display:grid; gap:1rem}
 .form-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
 label{font-weight:600; margin-bottom:.25rem; display:block}
-input,textarea{width:100%; padding:.75rem; border:2px solid #e2e8f0; border-radius:var(--radius); transition:border-color var(--trans)}
+input,textarea{width:100%; padding:.75rem; border:2px solid #e2e8f0; border-radius:var(--radius)}
 input:focus,textarea:focus{outline:none; border-color:var(--pri)}
 .modal{position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); z-index:2000; display:none; place-items:center; padding:1rem}
 .modal.active{display:grid}
 .modal-content{background:var(--bg); border-radius:var(--radius); max-width:500px; width:100%; animation:slideUp .3s}
 @keyframes slideUp{from{transform:translateY(30px); opacity:0}}
-.modal-header{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; padding:1.5rem; border-radius:var(--radius) var(--radius) 0 0; display:flex; justify-content:space-between; align-items:center}
-.close-btn{background:none; color:#fff; font-size:1.5rem; cursor:pointer}
+.close-btn{background:none; font-size:1.5rem; cursor:pointer; color:#fff}
+.modal-header{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; padding:1.5rem; display:flex; justify-content:space-between; align-items:center}
 .modal-body{padding:1.5rem}
-.floating-chai{position:fixed; bottom:1.5rem; right:1.5rem; width:3.5rem; height:3.5rem; border-radius:50%; background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.2); display:grid; place-items:center; font-size:1.25rem; z-index:99; transition:var(--trans)}
-.floating-chai:hover{transform:scale(1.1)}
-.dark{--bg:#1f2937; --bg2:#111827; --text:#f9fafb; --muted:#9ca3af}
-.dark .card{background:var(--bg2)}
-.dark input,.dark textarea{background:#374151; border-color:#4b5563; color:var(--text)}
-.dark tr:nth-child(even){background:#1f2937}
-.dark tr:hover{background:#374151}
-@media (max-width:600px){.form-row{grid-template-columns:1fr}.hero h1{font-size:2rem}}
+.floating-chai{position:fixed; bottom:1.5rem; right:1.5rem; width:3.5rem; height:3.5rem; border-radius:50%; background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.2); display:grid; place-items:center; font-size:1.25rem; z-index:99}
+@media (max-width:600px){.form-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="header">
   <div class="container nav">
     <div class="logo"><i class="fas fa-birthday-cake"></i> Birthday Bash</div>
-    <div style="display:flex; gap:.75rem; align-items:center">
-      <button class="btn btn-primary" id="darkToggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
-      <button class="btn chai-btn" onclick="openChai()"><i class="fas fa-mug-hot"></i> ChaiCheers</button>
-    </div>
+    <button class="btn chai-btn" onclick="openChai()"><i class="fas fa-mug-hot"></i> ChaiCheers</button>
   </div>
 </header>
 
 <section class="hero">
   <div class="container">
-    <h1>Many many happy returns of the day to Surya</h1>
-    <p>Delegates wish Surya - an avid carrom player, ace tennis player, balls daata!!!</p>
+    <h1>Never miss a birthday again</h1>
+    <p>Keep track of all your loved ones' special days in one beautiful place</p>
     <button class="btn btn-primary" onclick="scrollToForm()"><i class="fas fa-plus"></i> Add Birthday</button>
   </div>
 </section>
@@ -101,16 +77,16 @@ input:focus,textarea:focus{outline:none; border-color:var(--pri)}
       <button class="btn btn-primary" onclick="togglePhones()"><i class="fas fa-eye"></i> <span id="phoneBtn">Show phones</span></button>
     </div>
 
-    <div class="table-wrap">
+    <div style="overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow)">
       <table id="table">
         <thead>
           <tr>
-            <th onclick="sortTable(0)">Name <i class="fas fa-sort"></i></th>
-            <th onclick="sortTable(1)">Flat <i class="fas fa-sort"></i></th>
-            <th onclick="sortTable(2)">Birthday <i class="fas fa-sort"></i></th>
+            <th onclick="sortCol('name')">Name <i class="fas fa-sort"></i></th>
+            <th onclick="sortCol('flat')">Flat <i class="fas fa-sort"></i></th>
+            <th onclick="sortCol('month')">Birthday <i class="fas fa-sort"></i></th>
             <th>Phone</th>
             <th>2025 Party</th>
-            <th onclick="sortTable(5)">Days <i class="fas fa-sort"></i></th>
+            <th onclick="sortCol('daysLeft')">Days <i class="fas fa-sort"></i></th>
             <th>Action</th>
           </tr>
         </thead>
@@ -158,113 +134,171 @@ input:focus,textarea:focus{outline:none; border-color:var(--pri)}
 <button class="floating-chai" onclick="openChai()" aria-label="Support developer"><i class="fas fa-mug-hot"></i></button>
 
 <script>
-/* ---------- data ---------- */
-const existing=[{name:"Goutham",flat:"E2104",month:"Jan",day:10,phone:"9052323232",party2025:"Yes"},{name:"Ravindra",flat:"F1605",month:"Jan",day:21,phone:"9160061456",party2025:"Yes"},{name:"Nagi",flat:"J1701",month:"March",day:7,phone:"7674014433",party2025:"Yes"},{name:"Varun",flat:"B2308",month:"March",day:7,phone:"7406269369",party2025:"Yes"},{name:"Damoder",flat:"E901",month:"Apr",day:27,phone:"9573868588",party2025:"Yes"},{name:"Mogili",flat:"A901",month:"May",day:10,phone:"7337328671",party2025:"No"},{name:"Raj",flat:"F1003",month:"Jun",day:11,phone:"9949531325",party2025:"Yes"},{name:"Srikanth",flat:"L904",month:"Jun",day:15,phone:"9618567876",party2025:"Yes"},{name:"Vijay",flat:"H1904",month:"July",day:12,phone:"9000277757",party2025:"No"},{name:"Srinivasu B",flat:"F1008",month:"Jul",day:28,phone:"9160026888",party2025:"Yes"},{name:"Chaitu",flat:"G1008",month:"Aug",day:6,phone:"9704007409",party2025:"Yes"},{name:"Ramesh",flat:"C2104",month:"Sep",day:4,phone:"8886438888",party2025:"No"},{name:"Bhargav",flat:"H505",month:"Sep",day:25,phone:"8886178468",party2025:"No"},{name:"Mohan",flat:"F408",month:"Jun",day:1,phone:"9916666931",party2025:"No"},{name:"Sandeep",flat:"M903",month:"Nov",day:18,phone:"6303726803",party2025:"No"},{name:"PD",flat:"C2306",month:"Nov",day:19,phone:"8341346818",party2025:"No"},{name:"Sanjay",flat:"I1202",month:"Nov",day:30,phone:"9182001190",party2025:"No"},{name:"Nagesh",flat:"F701",month:"Dec",day:3,phone:"9908000038",party2025:"Yes"},{name:"Suryprakash",flat:"I1903",month:"Dec",day:6,phone:"",party2025:"Yes"},{name:"Jagannadh",flat:"F906",month:"Dec",day:16,phone:"9989044670",party2025:"Yes"},{name:"Sunil Ksk",flat:"E1708",month:"July",day:15,phone:"9885674917",party2025:"No"}];
-let list=[...existing,...JSON.parse(localStorage.getItem('extra')||'[]')]; // editable + fixed
-let phones=false, sortDir=1;
+/* ---------- 1.  initial JSON (immutable baseline) ---------- */
+const baseJSON = [
+{name:"Goutham",flat:"E2104",month:"Jan",day:10,phone:"9052323232",party2025:"Yes"},
+{name:"Ravindra",flat:"F1605",month:"Jan",day:21,phone:"9160061456",party2025:"Yes"},
+{name:"Nagi",flat:"J1701",month:"March",day:1,phone:"7674014433",party2025:"Yes"},
+{name:"Varun",flat:"B2308",month:"March",day:8,phone:"7406269369",party2025:"Yes"},
+{name:"Shiva Kaku",flat:"",month:"March",day:23,phone:"9160730005",party2025:"No"},
+{name:"Damoder",flat:"E901",month:"Apr",day:27,phone:"9573868588",party2025:"Yes"},
+{name:"Mogili",flat:"A901",month:"May",day:10,phone:"7337328671",party2025:"No"},
+{name:"Raj",flat:"F1003",month:"Jun",day:11,phone:"9949531325",party2025:"Yes"},
+{name:"Srikanth",flat:"L904",month:"Jun",day:15,phone:"9618567876",party2025:"Yes"},
+{name:"Vijay",flat:"H1904",month:"July",day:12,phone:"9000277757",party2025:"No"},
+{name:"Srinivasu B",flat:"F1008",month:"Jul",day:28,phone:"9160026888",party2025:"Yes"},
+{name:"Chaitu",flat:"G1008",month:"Aug",day:6,phone:"9704007409",party2025:"Yes"},
+{name:"Ramesh",flat:"C2104",month:"Sep",day:4,phone:"8886438888",party2025:"No"},
+{name:"Bhargav",flat:"H505",month:"Sep",day:25,phone:"8886178468",party2025:"No"},
+{name:"Mohan",flat:"F408",month:"Jun",day:1,phone:"9916666931",party2025:"No"},
+{name:"Sandeep",flat:"M903",month:"Nov",day:18,phone:"6303726803",party2025:"No"},
+{name:"PD",flat:"C2306",month:"Nov",day:19,phone:"8341346818",party2025:"No"},
+{name:"Sanjay",flat:"I1202",month:"Nov",day:30,phone:"9182001190",party2025:"No"},
+{name:"Nagesh",flat:"F701",month:"Dec",day:3,phone:"9908000038",party2025:"Yes"},
+{name:"Suryprakash",flat:"I1903",month:"Dec",day:6,phone:"",party2025:"No"},
+{name:"Jagannadh",flat:"F906",month:"Dec",day:16,phone:"9989044670",party2025:"Yes"}
+];
 
-/* ---------- render ---------- */
-function render(){
-  const s=document.getElementById('search').value.trim().toLowerCase();
-  const p=document.getElementById('partyFilter').value;
-  const rows=list.map((o,i)=>{
-    const days=getDays(o.month,o.day);
-    const cls=days===0?'today':(days>0&&days<=30)?'upcoming':'';
-    return `<tr data-index="${i}" class="${cls}">
-      <td>${o.name}</td>
-      <td>${o.flat||'-'}</td>
-      <td>${o.month||'???'} ${o.day||''}</td>
-      <td><span class="phoneMasked">${mask(o.phone)}</span><span class="phoneReal" hidden>${o.phone||'-'}</span></td>
-      <td><span class="status ${o.party2025.toLowerCase()}">${o.party2025}</span></td>
-      <td>${days===0?'Today! 🎉':days+' days'}</td>
-      <td><button class="btn btn-primary" onclick="editRow(${i})"><i class="fas fa-edit"></i></button>
-          <button class="btn" style="background:var(--danger);color:#fff" onclick="delRow(${i})"><i class="fas fa-trash"></i></button></td>
-    </tr>`;
-  }).join('');
-  const filtered=rows.replace(/<tr/g,'<tr style="display:none"').replace(/style="display:none"/g,(_,j,k)=>{
-    const idx=k.indexOf('data-index="')+12;
-    const i=+k.slice(idx,k.indexOf('"',idx));
-    const o=list[i];
-    const show=(!s||o.name.toLowerCase().includes(s)||o.flat.toLowerCase().includes(s))&&(!p||o.party2025.toLowerCase()===p);
-    return show?'':'style="display:none"';
-  });
-  document.querySelector('tbody').innerHTML=filtered;
-  togglePhones(phones);
+/* ---------- 2.  JSON storage helpers ---------- */
+const STORAGE_KEY = 'birthdayJSON';        // mutable JSON lives here
+function loadJSON(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [...baseJSON]; // clone baseline first time
+  }catch{ return [...baseJSON]; }
 }
-render();
+function saveJSON(arr){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
 
-/* ---------- utils ---------- */
+/* ---------- 3.  state ---------- */
+let json = loadJSON();          // single source of truth
+let phonesVisible = false;
+let sortCol = 'daysLeft', sortDir = 1;
+
+/* ---------- 4.  render ---------- */
+function render(){
+  const s = document.getElementById('search').value.trim().toLowerCase();
+  const p = document.getElementById('partyFilter').value;
+
+  // enrich once (non-mutating)
+  const enriched = json.map(o=>{
+    const days = getDays(o.month,o.day);
+    return {...o, daysLeft: days, rowClass: days===0?'today':(days>0&&days<=30)?'upcoming':''};
+  });
+
+  // sort
+  enriched.sort((a,b)=>{
+    let v1 = a[sortCol], v2 = b[sortCol];
+    if(sortCol==='daysLeft'){ v1=Number(v1); v2=Number(v2); }
+    else { v1=v1?.toLowerCase()||''; v2=v2?.toLowerCase()||''; }
+    return v1>v2 ? sortDir : v1<v2 ? -sortDir : 0;
+  });
+
+  // filter
+  const filtered = enriched.filter(o=>
+    (!s||o.name.toLowerCase().includes(s)||o.flat.toLowerCase().includes(s)) &&
+    (!p||o.party2025.toLowerCase()===p)
+  );
+
+  const rows = filtered.map((o,idx)=>`
+  <tr class="${o.rowClass}" data-id="${o.id||idx}">
+    <td>${o.name}</td>
+    <td>${o.flat||'-'}</td>
+    <td>${o.month||'???'} ${o.day||''}</td>
+    <td><span class="phoneMasked">${mask(o.phone)}</span><span class="phoneReal" hidden>${o.phone||'-'}</span></td>
+    <td><span class="status ${o.party2025.toLowerCase()}">${o.party2025}</span></td>
+    <td>${o.daysLeft===0?'Today! 🎉':o.daysLeft+' days'}</td>
+    <td>
+      <button class="btn btn-primary" onclick="editRow(${o.id??idx})"><i class="fas fa-edit"></i></button>
+      <button class="btn" style="background:var(--danger);color:#fff" onclick="delRow(${o.id??idx})"><i class="fas fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+
+  document.querySelector('tbody').innerHTML = rows || '<tr><td colspan="7" style="text-align:center">No matches</td></tr>';
+  togglePhones(phonesVisible);
+}
+
+/* ---------- 5.  utils ---------- */
 function getDays(mon,day){
-  if(!mon||!day)return 9999;
-  const m={jan:0,january:0,feb:1,march:2,apr:3,may:4,jun:5,july:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  if(!mon||!day) return 9999;
+  const m={jan:0,january:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
   const today=new Date(), y=today.getFullYear(), b=new Date(y,m[mon.toLowerCase()],day);
-  if(b<today)b.setFullYear(y+1);
+  if(b<today) b.setFullYear(y+1);
   return Math.ceil((b-today)/864e5);
 }
 function mask(p){return p?p.slice(0,2)+'•••••'+p.slice(-2):'-';}
 function scrollToForm(){document.getElementById('addCard').scrollIntoView({behavior:'smooth'});}
 function togglePhones(force){
-  phones=force!=null?force:!phones;
-  document.querySelectorAll('.phoneMasked').forEach(el=>el.hidden=phones);
-  document.querySelectorAll('.phoneReal').forEach(el=>el.hidden=!phones);
-  document.getElementById('phoneBtn').textContent=phones?'Hide phones':'Show phones';
+  phonesVisible = force!=null ? force : !phonesVisible;
+  document.querySelectorAll('.phoneMasked').forEach(el=>el.hidden=phonesVisible);
+  document.querySelectorAll('.phoneReal').forEach(el=>el.hidden=!phonesVisible);
+  document.getElementById('phoneBtn').textContent = phonesVisible ? 'Hide phones' : 'Show phones';
 }
 
-/* ---------- sort ---------- */
-function sortTable(col){
-  const key=['name','flat','month','phone','party2025','days'][col];
-  sortDir*=-1;
-  list.sort((a,b)=>{
-    let v1=key==='days'?getDays(a.month,a.day):a[key]?.toLowerCase()||'';
-    let v2=key==='days'?getDays(b.month,b.day):b[key]?.toLowerCase()||'';
-    if(v1>v2)return sortDir; if(v1<v2)return -sortDir; return 0;
-  });
+/* ---------- 6.  sort ---------- */
+function sortCol(col){
+  if(sortCol===col) sortDir*=-1; else {sortCol=col; sortDir=1;}
   render();
 }
 
-/* ---------- crud ---------- */
+/* ---------- 7.  crud (mutates JSON + saves) ---------- */
 function saveBirthday(e){
   e.preventDefault();
-  const f=new FormData(e.target), o=Object.fromEntries(f);
-  o.party2025='No'; o.month=monthName(o.birthday); o.day=dayNum(o.birthday);
-  list.push(o); localStorage.setItem('extra',JSON.stringify(list.filter((x,i)=>i>=existing.length)));
-  e.target.reset(); render(); showToast('Saved!');
+  const f = new FormData(e.target);
+  const date = new Date(f.get('birthday'));
+  const entry = {
+    name: f.get('name'),
+    flat: f.get('flat')||'',
+    month: date.toLocaleString('en',{month:'short'}),
+    day: date.getDate(),
+    phone: f.get('phone')||'',
+    notes: f.get('notes')||'',
+    party2025: 'No',
+    id: Date.now() // simple unique key
+  };
+  json.push(entry);
+  saveJSON(json);
+  e.target.reset();
+  render();
+  showToast('Saved!');
 }
-function monthName(d){return new Date(d).toLocaleString('en',{month:'short'})}
-function dayNum(d){return new Date(d).getDate()}
-function delRow(i){if(confirm('Delete?')){list.splice(i,1); saveExtra(); render();}}
-function editRow(i){
-  const o=list[i];
-  const name=prompt('Name',o.name)||o.name;
-  const flat=prompt('Flat',o.flat)||o.flat;
-  const phone=prompt('Phone',o.phone)||o.phone;
-  list[i]={...o,name,flat,phone}; saveExtra(); render();
+function editRow(id){
+  const idx = json.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const o=json[idx];
+  const name=prompt('Name',o.name);   if(!name) return;
+  const flat=prompt('Flat',o.flat);
+  const phone=prompt('Phone',o.phone);
+  json[idx]={...o,name,flat,phone};
+  saveJSON(json); render(); showToast('Updated!');
 }
-function saveExtra(){localStorage.setItem('extra',JSON.stringify(list.filter((x,idx)=>idx>=existing.length)));}
+function delRow(id){
+  if(!confirm('Delete this birthday?')) return;
+  json=json.filter(x=>x.id!==id);
+  saveJSON(json); render(); showToast('Deleted');
+}
 
-/* ---------- chai ---------- */
+/* ---------- 8.  chai ---------- */
 function openChai(){document.getElementById('chaiModal').classList.add('active');}
 function closeModal(id){document.getElementById(id).classList.remove('active');}
 function tip(amt){
-  const upi=`upi://pay?pa=8341346818@ybl&pn=BirthdayBash&am=${amt}&cu=INR&tn=Support`;
-  location.href=upi;
-  setTimeout(()=>{closeModal('chaiModal'); showToast('Thanks for the chai!');},800);
+  location.href=`upi://pay?pa=8341346818@ybl&pn=BirthdayBash&am=${amt}&cu=INR&tn=Support`;
+  setTimeout(()=>{closeModal('chaiModal'); showToast('Thanks for the chai!');},600);
 }
 function showToast(msg){
-  const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:.75rem 1.25rem; border-radius:var(--radius); box-shadow:var(--shadow); z-index:3000; animation:fade .3s'; document.body.appendChild(t); setTimeout(()=>t.remove(),2000);
+  const t=document.createElement('div'); t.textContent=msg;
+  t.style.cssText='position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:.75rem 1.25rem; border-radius:var(--radius); box-shadow:var(--shadow); z-index:3000; animation:fade .3s';
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2000);
 }
 
-/* ---------- dark ---------- */
-document.getElementById('darkToggle').onclick=()=>{
-  document.body.classList.toggle('dark');
-  const icn=document.querySelector('#darkToggle i');
-  icn.classList.toggle('fa-moon'); icn.classList.toggle('fa-sun');
-};
-
-/* ---------- listeners ---------- */
+/* ---------- 9.  listeners ---------- */
 document.getElementById('search').addEventListener('input',render);
 document.getElementById('partyFilter').addEventListener('change',render);
 window.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'));});
+
+/* ---------- 10.  boot ---------- */
+render();
 </script>
 </body>
 </html>
