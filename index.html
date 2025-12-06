@@ -238,7 +238,115 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* FILTER CONTROLS - NEW */
+        /* EXISTING BIRTHDAY LIST - PROMINENT DISPLAY */
+        .existing-birthday-section {
+            margin-bottom: 3rem;
+        }
+
+        .birthday-list-main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .birthday-card-main {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--birthday-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .birthday-card-main:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .birthday-card-main.upcoming {
+            border-left-color: var(--success-color);
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .birthday-card-main.today {
+            border-left-color: var(--warning-color);
+            background: var(--cake-gradient);
+            animation: celebrate 2s infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .birthday-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .birthday-card-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .birthday-card-date {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .birthday-card-info {
+            margin-top: 1rem;
+        }
+
+        .birthday-card-flat {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .birthday-card-countdown {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .birthday-card-party {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .birthday-card-party.yes {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+        }
+
+        .birthday-card-party.no {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: white;
+        }
+
+        .birthday-card-phone {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        /* FILTER CONTROLS */
         .filter-controls {
             display: flex;
             gap: 1rem;
@@ -426,12 +534,13 @@
             margin-left: 0.5rem;
         }
 
-        /* Table Styles */
+        /* Table Styles for Detailed View */
         .table-container {
             overflow-x: auto;
             border-radius: var(--border-radius-lg);
             box-shadow: var(--shadow-md);
             border: 1px solid #e2e8f0;
+            margin-top: 2rem;
         }
 
         .data-table {
@@ -562,7 +671,7 @@
         .modal-title {
             font-size: 1.5rem;
             font-weight: 700;
-        }
+n        }
 
         .close-btn {
             background: none;
@@ -632,6 +741,10 @@
                 justify-content: space-between;
                 align-items: center;
             }
+
+            .birthday-list-main {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -667,125 +780,163 @@
     <!-- Main Content -->
     <section class="main-content">
         <div class="container">
-            <!-- Existing Birthday Data Table -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <div class="chai-corner" onclick="openChaiModal()" title="Love this list? ChaiCheers!">
-                    <i class="fas fa-mug-hot"></i>
-                </div>
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-table"></i> Birthday List 2025-2026
-                    </h2>
-                    <button class="btn btn-primary" onclick="toggleAllPhones()">
-                        <i class="fas fa-eye"></i> <span id="togglePhoneText">Show All Phones</span>
-                    </button>
-                </div>
+            
+            <!-- EXISTING BIRTHDAY LIST - MAIN FEATURE -->
+            <div class="existing-birthday-section">
+                <div class="card">
+                    <div class="chai-corner" onclick="openChaiModal()" title="Love this list? ChaiCheers!">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-birthday-cake"></i> Upcoming Birthdays
+                        </h2>
+                        <button class="btn btn-primary" onclick="toggleAllPhones()">
+                            <i class="fas fa-eye"></i> <span id="togglePhoneText">Show Phones</span>
+                        </button>
+                    </div>
 
-                <!-- FILTER CONTROLS -->
-                <div class="filter-controls">
-                    <div class="filter-group">
-                        <label class="filter-label">
-                            <i class="fas fa-filter"></i> 2025 Party Status
-                        </label>
-                        <div class="filter-dropdown">
-                            <button class="filter-btn" onclick="toggleFilter('partyFilter')">
-                                <span id="selectedPartyFilter">All Status</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="filter-content" id="partyFilter">
-                                <div class="filter-option selected" onclick="selectPartyFilter('all')">
-                                    <i class="fas fa-list"></i> All Status
-                                </div>
-                                <div class="filter-option" onclick="selectPartyFilter('yes')">
-                                    <i class="fas fa-check-circle" style="color: #22c55e;"></i> Party Given
-                                </div>
-                                <div class="filter-option" onclick="selectPartyFilter('no')">
-                                    <i class="fas fa-times-circle" style="color: #ef4444;"></i> Party Not Given
+                    <!-- FILTER CONTROLS -->
+                    <div class="filter-controls">
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-filter"></i> 2025 Party Status
+                            </label>
+                            <div class="filter-dropdown">
+                                <button class="filter-btn" onclick="toggleFilter('partyFilter')">
+                                    <span id="selectedPartyFilter">All Status</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-content" id="partyFilter">
+                                    <div class="filter-option selected" onclick="selectPartyFilter('all')">
+                                        <i class="fas fa-list"></i> All Status
+                                    </div>
+                                    <div class="filter-option" onclick="selectPartyFilter('yes')">
+                                        <i class="fas fa-check-circle" style="color: #22c55e;"></i> Party Given
+                                    </div>
+                                    <div class="filter-option" onclick="selectPartyFilter('no')">
+                                        <i class="fas fa-times-circle" style="color: #ef4444;"></i> Party Not Given
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <button class="clear-filters" onclick="clearAllFilters()">
+                            <i class="fas fa-times"></i> Clear All
+                        </button>
+
+                        <div class="filter-stats" id="filterStats">
+                            <span id="visibleCount">0</span> of <span id="totalCount">0</span> entries
+                        </div>
                     </div>
 
-                    <button class="clear-filters" onclick="clearAllFilters()">
-                        <i class="fas fa-times"></i> Clear All
-                    </button>
-
-                    <div class="filter-stats" id="filterStats">
-                        <span id="visibleCount">0</span> of <span id="totalCount">0</span> entries
+                    <!-- BIRTHDAY CARDS GRID - MAIN DISPLAY -->
+                    <div class="birthday-list-main" id="birthdayCardsGrid">
+                        <!-- Will be populated by JavaScript -->
                     </div>
-                </div>
 
-                <div class="table-container">
-                    <table class="data-table" id="birthdayTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Flat</th>
-                                <th>Birthday</th>
-                                <th>Phone</th>
-                                <th>2025 Party</th>
-                                <th>Days Until</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="existingBirthdaysTable">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
-                    </table>
+                    <!-- DETAILED TABLE VIEW -->
+                    <div style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--text-primary); font-size: 1.5rem;">
+                            <i class="fas fa-table"></i> Detailed Birthday List
+                        </h3>
+                        <div class="table-container">
+                            <table class="data-table" id="birthdayTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Flat</th>
+                                        <th>Birthday</th>
+                                        <th>Phone</th>
+                                        <th>2025 Party</th>
+                                        <th>Days Until</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="existingBirthdaysTable">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Add Birthday Form -->
-            <div class="card" id="addBirthdayCard">
-                <div class="chai-corner" onclick="openChaiModal()" title="Support with ChaiCheers!">
-                    <i class="fas fa-mug-hot"></i>
-                </div>
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-user-plus"></i> Add New Birthday
-                    </h2>
-                </div>
-
-                <div class="privacy-notice">
-                    <i class="fas fa-info-circle"></i> <strong>Privacy Notice:</strong> Phone numbers are optional and kept private.
-                </div>
-
-                <form onsubmit="addBirthday(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Name *</label>
-                            <input type="text" class="form-input" name="name" required placeholder="Enter name">
+            <div class="content-grid">
+                <div>
+                    <div class="card" id="addBirthdayCard">
+                        <div class="chai-corner" onclick="openChaiModal()" title="Support with ChaiCheers!">
+                            <i class="fas fa-mug-hot"></i>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Birthday *</label>
-                            <input type="date" class="form-input" name="birthday" required>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-user-plus"></i> Add New Birthday
+                            </h2>
+                        </div>
+
+                        <div class="privacy-notice">
+                            <i class="fas fa-info-circle"></i> <strong>Privacy Notice:</strong> Phone numbers are optional and kept private.
+                        </div>
+
+                        <form onsubmit="addBirthday(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Name *</label>
+                                    <input type="text" class="form-input" name="name" required placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Birthday *</label>
+                                    <input type="date" class="form-input" name="birthday" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" name="email" placeholder="john@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Phone Number 
+                                        <span class="optional-badge">Optional</span>
+                                    </label>
+                                    <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <input type="text" class="form-input" name="notes" placeholder="Favorite gift ideas, hobbies, etc.">
+                            </div>
+
+                            <button type="submit" class="btn chai-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                                <i class="fas fa-birthday-cake"></i> Add Birthday
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <!-- Quick Stats -->
+                    <div class="card">
+                        <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-chart-bar"></i> Quick Stats
+                        </h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--border-radius-md);">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--birthday-color);" id="totalBirthdays">0</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Total Birthdays</div>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--border-radius-md);">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--success-color);" id="thisMonth">0</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">This Month</div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" name="email" placeholder="john@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">
-                                Phone Number 
-                                <span class="optional-badge">Optional</span>
-                            </label>
-                            <input type="tel" class="form-input" name="phone" placeholder="+91 98765 43210">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <input type="text" class="form-input" name="notes" placeholder="Favorite gift ideas, hobbies, etc.">
-                    </div>
-
-                    <button type="submit" class="btn chai-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                        <i class="fas fa-birthday-cake"></i> Add Birthday
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -839,7 +990,7 @@
         const existingBirthdays = [
             { name: "Goutham", flat: "E2104", month: "Jan", day: 10, phone: "9052323232", party2025: "Yes" },
             { name: "Ravindra", flat: "F1605", month: "Jan", day: 21, phone: "9160061456", party2025: "Yes" },
-            { name: "Nagi", flat: "J1701", month: "March", day: 1, phone: "7674014433", party2025: "Yes" },
+                        { name: "Nagi", flat: "J1701", month: "March", day: 1, phone: "7674014433", party2025: "Yes" },
             { name: "Varun", flat: "B2308", month: "March", day: 8, phone: "7406269369", party2025: "Yes" },
             { name: "Shiva Kaku", flat: "", month: "March", day: 23, phone: "9160730005", party2025: "No" },
             { name: "Damoder", flat: "E901", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes" },
@@ -868,9 +1019,11 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            displayBirthdayCards();
             displayExistingBirthdays();
             loadBirthdays();
             updateFilterStats();
+            updateQuickStats();
             
             // Close dropdowns when clicking outside
             document.addEventListener('click', function(e) {
@@ -881,6 +1034,79 @@
                 }
             });
         });
+
+        function displayBirthdayCards() {
+            const cardsGrid = document.getElementById('birthdayCardsGrid');
+            
+            // Sort by next birthday
+            const sortedData = [...existingBirthdays]
+                .filter(b => b.month && b.day) // Only include valid dates
+                .sort((a, b) => {
+                    return getDaysUntilBirthday(a.month, a.day) - getDaysUntilBirthday(b.month, b.day);
+                });
+            
+            if (sortedData.length === 0) {
+                cardsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <i class="fas fa-birthday-cake" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-muted); font-size: 1.1rem;">No birthdays to display</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            cardsGrid.innerHTML = sortedData.map((person, index) => {
+                const daysUntil = getDaysUntilBirthday(person.month, person.day);
+                const isToday = daysUntil === 0;
+                const isUpcoming = daysUntil > 0 && daysUntil <= 30;
+                
+                return `
+                    <div class="birthday-card-main ${isToday ? 'today' : isUpcoming ? 'upcoming' : ''}" 
+                         data-party="${person.party2025.toLowerCase()}"
+                         style="position: relative;">
+                        <div class="birthday-card-party ${person.party2025.toLowerCase()}">
+                            ${person.party2025 === 'Yes' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'}
+                            ${person.party2025}
+                        </div>
+                        
+                        <div class="birthday-card-header">
+                            <div class="birthday-card-name">
+                                ${isToday ? '<i class="fas fa-birthday-cake" style="color: var(--birthday-color);"></i>' : '<i class="fas fa-user" style="color: var(--text-muted);"></i>'}
+                                ${person.name}
+                            </div>
+                            <div class="birthday-card-date">
+                                ${person.month} ${person.day}
+                            </div>
+                        </div>
+                        
+                        <div class="birthday-card-info">
+                            <div class="birthday-card-flat">
+                                <i class="fas fa-building"></i> ${person.flat || 'Flat TBD'}
+                            </div>
+                            
+                            ${person.phone ? `
+                                <div class="birthday-card-phone">
+                                    <span class="phone-hidden">••••••••••</span>
+                                    <span class="phone-visible" style="display: none;">${person.phone}</span>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="birthday-card-countdown">
+                                ${isToday ? '🎉 <strong>Celebrate Today!</strong>' : 
+                                  daysUntil > 0 ? `<i class="fas fa-calendar"></i> In ${daysUntil} day${daysUntil > 1 ? 's' : ''}` : 
+                                  `<i class="fas fa-clock"></i> ${Math.abs(daysUntil)} day${Math.abs(daysUntil) > 1 ? 's' : ''} ago`}
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem; text-align: center;">
+                            <button class="btn btn-primary" onclick="requestCorrection('${person.name}')" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
+                                <i class="fas fa-edit"></i> Request Fix
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         function displayExistingBirthdays() {
             const tableBody = document.getElementById('existingBirthdaysTable');
@@ -974,8 +1200,6 @@
                     </tr>
                 `).join('');
             }
-            
-            updateFilterStats();
         }
 
         function toggleFilter(filterId) {
@@ -1003,35 +1227,43 @@
             document.querySelectorAll('#partyFilter .filter-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            event.target.classList.add('selected');
+n            event.target.classList.add('selected');
             
             // Close dropdown
             document.getElementById('partyFilter').classList.remove('show');
             
-            // Apply filter
+            // Apply filter to both cards and table
             applyFilters();
         }
 
         function applyFilters() {
+            const cards = document.querySelectorAll('.birthday-card-main');
             const rows = document.querySelectorAll('#existingBirthdaysTable tr');
             let visibleCount = 0;
             
+            // Filter cards
+            cards.forEach(card => {
+                const partyStatus = card.dataset.party;
+                
+                let showCard = true;
+                if (currentPartyFilter !== 'all' && partyStatus !== currentPartyFilter) {
+                    showCard = false;
+                }
+                
+                card.style.display = showCard ? '' : 'none';
+                if (showCard) visibleCount++;
+            });
+            
+            // Filter table rows
             rows.forEach(row => {
                 const partyStatus = row.dataset.party;
                 
                 let showRow = true;
-                
-                // Apply party filter
                 if (currentPartyFilter !== 'all' && partyStatus !== currentPartyFilter) {
                     showRow = false;
                 }
                 
-                if (showRow) {
-                    row.style.display = '';
-                    visibleCount++;
-                } else {
-                    row.style.display = 'none';
-                }
+                row.style.display = showRow ? '' : 'none';
             });
             
             updateFilterStats(visibleCount);
@@ -1049,7 +1281,11 @@
             });
             document.querySelector('#partyFilter .filter-option').classList.add('selected');
             
-            // Show all rows
+            // Show all cards and rows
+            document.querySelectorAll('.birthday-card-main').forEach(card => {
+                card.style.display = '';
+            });
+            
             document.querySelectorAll('#existingBirthdaysTable tr').forEach(row => {
                 row.style.display = '';
             });
@@ -1062,10 +1298,26 @@
         function updateFilterStats(visible = null) {
             const total = existingBirthdays.length;
             const visibleCount = visible !== null ? visible : 
-                document.querySelectorAll('#existingBirthdaysTable tr:not([style*="display: none"])').length;
+                document.querySelectorAll('.birthday-card-main:not([style*="display: none"])').length;
             
             document.getElementById('totalCount').textContent = total;
             document.getElementById('visibleCount').textContent = visibleCount;
+        }
+
+        function updateQuickStats() {
+            document.getElementById('totalBirthdays').textContent = existingBirthdays.length;
+            
+            const thisMonth = existingBirthdays.filter(b => {
+                if (!b.month) return false;
+                const currentMonth = new Date().getMonth();
+                const monthMap = {
+                    'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+                    'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+                };
+                return monthMap[b.month] === currentMonth;
+            }).length;
+            
+            document.getElementById('thisMonth').textContent = thisMonth;
         }
 
         function getDaysUntilBirthday(month, day) {
@@ -1107,7 +1359,7 @@
         }
 
         function togglePhone(button) {
-            const td = button.closest('td');
+            const td = button.closest('td') || button.closest('.birthday-card-main');
             const hidden = td.querySelector('.phone-hidden');
             const visible = td.querySelector('.phone-visible');
             const icon = button.querySelector('i');
@@ -1137,7 +1389,7 @@
                 el.style.display = phonesVisible ? 'inline' : 'none';
             });
             
-            toggleText.textContent = phonesVisible ? 'Hide All Phones' : 'Show All Phones';
+            toggleText.textContent = phonesVisible ? 'Hide Phones' : 'Show Phones';
             
             // Update all button icons
             document.querySelectorAll('.phone-toggle i').forEach(icon => {
@@ -1169,7 +1421,7 @@
             // Reset form
             event.target.reset();
             
-            showNotification('Birthday Added!', `${birthday.name}'s birthday has been added successfully.', 'success');
+            showNotification('Birthday Added!', `${birthday.name}'s birthday has been added successfully.`, 'success');
         }
 
         function saveBirthdays() {
