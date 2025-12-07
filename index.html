@@ -1,317 +1,343 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Birthday Bash – JSON edition</title>
-<style>
-:root{
-  --pri:#667eea; --sec:#764ba2; --bg:#fff; --bg2:#f7fafc; --text:#2d3748; --muted:#718096;
-  --radius:12px; --shadow:0 4px 12px rgba(0,0,0,.1);
-  font-family:Poppins,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-}
-*{box-sizing:border-box; margin:0; padding:0}
-body{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); min-height:100vh; color:var(--text); line-height:1.6}
-.container{max-width:1200px; margin:0 auto; padding:0 1rem}
-.card{background:var(--bg); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.5rem; margin-bottom:1.5rem}
-.btn{display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem; border:none; border-radius:var(--radius); font-weight:600; cursor:pointer; transition:.25s ease}
-.btn-primary{background:var(--pri); color:#fff}
-.btn-primary:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(102,126,234,.4)}
-.chai-btn{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff}
-.chai-btn:hover{transform:translateY(-3px) scale(1.05)}
-.header{position:sticky; top:0; z-index:100; background:linear-gradient(135deg,var(--pri) 0%,var(--sec) 100%); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.nav{display:flex; justify-content:space-between; align-items:center; padding:1rem 0}
-.logo{font-family:Pacifico,cursive; font-size:1.75rem; display:flex; align-items:center; gap:.5rem}
-.hero{text-align:center; padding:3rem 0; background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%); color:#fff}
-.hero h1{font-size:2.75rem; margin-bottom:.5rem}
-table{width:100%; border-collapse:collapse; font-size:.9rem; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow)}
-th{background:var(--pri); color:#fff; padding:.75rem; text-align:left; cursor:pointer}
-td{padding:.75rem; border-bottom:1px solid #e2e8f0}
-tr:nth-child(even){background:var(--bg2)}
-tr:hover{background:#e9ecef}
-.status{display:inline-flex; align-items:center; gap:.25rem; padding:.25rem .5rem; border-radius:999px; font-size:.75rem; font-weight:700}
-.status.yes{background:#22c55e; color:#fff}
-.status.no{background:#ef4444; color:#fff}
-.today{background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%)}
-.upcoming{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%)}
-.form-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
-label{font-weight:600; margin-bottom:.25rem; display:block}
-input,textarea{width:100%; padding:.75rem; border:2px solid #e2e8f0; border-radius:var(--radius)}
-input:focus,textarea:focus{outline:none; border-color:var(--pri)}
-.modal{position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); z-index:2000; display:none; place-items:center; padding:1rem}
-.modal.active{display:grid}
-.modal-content{background:var(--bg); border-radius:var(--radius); max-width:500px; width:100%; animation:slideUp .3s}
-@keyframes slideUp{from{transform:translateY(30px); opacity:0}}
-.close-btn{background:none; font-size:1.5rem; cursor:pointer; color:#fff}
-.modal-header{background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; padding:1.5rem; display:flex; justify-content:space-between; align-items:center}
-.modal-body{padding:1.5rem}
-.floating-chai{position:fixed; bottom:1.5rem; right:1.5rem; width:3.5rem; height:3.5rem; border-radius:50%; background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%); color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.2); display:grid; place-items:center; font-size:1.25rem; z-index:99}
-@media (max-width:600px){.form-row{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Birthday Bash – Never Miss a Birthday Again</title>
+  <meta name="description" content="Track birthdays, manage parties, and celebrate together" />
+  <meta name="theme-color" content="#ff6b6b" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header class="header">
-  <div class="container nav">
-    <div class="logo"><i class="fas fa-birthday-cake"></i> Birthday Bash</div>
-    <button class="btn chai-btn" onclick="openChai()"><i class="fas fa-mug-hot"></i> ChaiCheers</button>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="container">
-    <h1>Never miss a birthday again</h1>
-    <p>Keep track of all your loved ones' special days in one beautiful place</p>
-    <button class="btn btn-primary" onclick="scrollToForm()"><i class="fas fa-plus"></i> Add Birthday</button>
-  </div>
-</section>
-
-<main class="container">
-  <section class="card">
-    <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center; margin-bottom:1rem">
-      <input type="search" id="search" placeholder="🔍 Search name / flat" style="flex:1 1 240px">
-      <select id="partyFilter" style="padding:.5rem; border-radius:var(--radius); border:2px solid #e2e8f0">
-        <option value="">All parties</option>
-        <option value="yes">Party given</option>
-        <option value="no">Party not given</option>
-      </select>
-      <button class="btn btn-primary" onclick="togglePhones()"><i class="fas fa-eye"></i> <span id="phoneBtn">Show phones</span></button>
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav">
+      <div class="logo">
+        <i class="fas fa-birthday-cake"></i>
+        <span>Birthday Bash</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-icon" id="statsBtn" aria-label="View statistics" title="Statistics">
+          <i class="fas fa-chart-pie"></i>
+        </button>
+        <button class="btn-icon" id="darkToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="btn chai-btn" onclick="openModal('chaiModal')">
+          <i class="fas fa-mug-hot"></i>
+          <span>ChaiCheers</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <div style="overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow)">
-      <table id="table">
-        <thead>
-          <tr>
-            <th onclick="sortCol('name')">Name <i class="fas fa-sort"></i></th>
-            <th onclick="sortCol('flat')">Flat <i class="fas fa-sort"></i></th>
-            <th onclick="sortCol('month')">Birthday <i class="fas fa-sort"></i></th>
-            <th>Phone</th>
-            <th>2025 Party</th>
-            <th onclick="sortCol('daysLeft')">Days <i class="fas fa-sort"></i></th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="confetti" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <h1>Many Many Happy Returns of the Day to Surya! 🎉</h1>
+      <p class="hero-subtitle">Delegates wish Surya - an avid carrom player, ace tennis player, balls daata!!!</p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="totalBirthdays">0</div>
+          <div class="stat-label">Total Birthdays</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="upcomingCount">0</div>
+          <div class="stat-label">Upcoming (30d)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="todayCount">0</div>
+          <div class="stat-label">Today</div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-large" onclick="scrollToForm()">
+        <i class="fas fa-plus"></i>
+        Add Birthday
+      </button>
     </div>
   </section>
 
-  <section class="card" id="addCard">
-    <h2 style="margin-bottom:1rem"><i class="fas fa-user-plus"></i> Add new birthday</h2>
-    <form onsubmit="saveBirthday(event)">
-      <div class="form-row">
-        <div><label>Name *</label><input name="name" required placeholder="e.g. Goutham"></div>
-        <div><label>Birthday *</label><input type="date" name="birthday" required></div>
-      </div>
-      <div class="form-row">
-        <div><label>Flat</label><input name="flat" placeholder="e.g. E2104"></div>
-        <div><label>Phone</label><input type="tel" name="phone" placeholder="optional"></div>
-      </div>
-      <div><label>Notes</label><textarea name="notes" rows="2" placeholder="gift ideas, etc."></textarea></div>
-      <button class="btn chai-btn" style="width:100%"><i class="fas fa-save"></i> Save</button>
-    </form>
-  </section>
-</main>
+  <main class="container">
+    <!-- Filters & Controls -->
+    <section class="card controls-card">
+      <div class="controls-grid">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="search" id="search" placeholder="Search name or flat..." />
+        </div>
+        
+        <select id="partyFilter" class="select-fancy">
+          <option value="">All parties</option>
+          <option value="yes">Party given ✅</option>
+          <option value="no">Party not given ❌</option>
+        </select>
 
-<!-- Chai modal -->
-<div class="modal" id="chaiModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <span><i class="fas fa-mug-hot"></i> Support Birthday Bash</span>
-      <button class="close-btn" onclick="closeModal('chaiModal')">&times;</button>
-    </div>
-    <div class="modal-body" style="text-align:center">
-      <p>This app is free. Buy the developer a chai to keep it running.</p>
-      <div style="display:flex; gap:.5rem; justify-content:center; margin:1rem 0">
-        <button class="btn chai-btn" onclick="tip(25)">₹25</button>
-        <button class="btn chai-btn" onclick="tip(50)">₹50</button>
-        <button class="btn chai-btn" onclick="tip(100)">₹100</button>
+        <select id="monthFilter" class="select-fancy">
+          <option value="">All months</option>
+          <option value="jan">January</option>
+          <option value="feb">February</option>
+          <option value="mar">March</option>
+          <option value="apr">April</option>
+          <option value="may">May</option>
+          <option value="jun">June</option>
+          <option value="jul">July</option>
+          <option value="aug">August</option>
+          <option value="sep">September</option>
+          <option value="oct">October</option>
+          <option value="nov">November</option>
+          <option value="dec">December</option>
+        </select>
+        
+        <button class="btn btn-secondary" onclick="togglePhones()">
+          <i class="fas fa-eye"></i>
+          <span id="phoneBtn">Show Phones</span>
+        </button>
+
+        <button class="btn btn-secondary" onclick="openModal('importModal')">
+          <i class="fas fa-file-import"></i>
+          Import CSV
+        </button>
+
+        <button class="btn btn-secondary" onclick="exportData()">
+          <i class="fas fa-download"></i>
+          Export
+        </button>
       </div>
-      <div class="card" style="background:#fef3c7; color:#92400e">UPI: <strong>8341346818@ybl</strong></div>
+    </section>
+
+    <!-- Birthday Table -->
+    <section class="card table-card">
+      <div class="table-header">
+        <h2><i class="fas fa-list"></i> All Birthdays</h2>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="table" onclick="switchView('table')">
+            <i class="fas fa-table"></i>
+          </button>
+          <button class="view-btn" data-view="calendar" onclick="switchView('calendar')">
+            <i class="fas fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Table View -->
+      <div id="tableView" class="table-wrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('name')">
+                Name <i class="fas fa-sort sort-icon"></i>
+              </th>
+              <th onclick="sortTable('flat')">
+                Flat <i class="fas fa-sort sort-icon"></i>
+              </th>
+              <th onclick="sortTable('birthday')">
+                Birthday <i class="fas fa-sort sort-icon"></i>
+              </th>
+              <th>Phone</th>
+              <th onclick="sortTable('party2025')">
+                2025 Party <i class="fas fa-sort sort-icon"></i>
+              </th>
+              <th onclick="sortTable('days')">
+                Days Away <i class="fas fa-sort sort-icon"></i>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Calendar View -->
+      <div id="calendarView" class="calendar-view" style="display: none;">
+        <div id="calendarGrid"></div>
+      </div>
+    </section>
+
+    <!-- Add Birthday Form -->
+    <section class="card form-card" id="addCard">
+      <h2><i class="fas fa-user-plus"></i> Add New Birthday</h2>
+      <form onsubmit="saveBirthday(event)" id="birthdayForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nameInput">Name *</label>
+            <input id="nameInput" name="name" required placeholder="e.g. Goutham" autocomplete="off" />
+          </div>
+          
+          <div class="form-group">
+            <label for="birthdayInput">Birthday *</label>
+            <input id="birthdayInput" type="date" name="birthday" required />
+          </div>
+          
+          <div class="form-group">
+            <label for="flatInput">Flat</label>
+            <input id="flatInput" name="flat" placeholder="e.g. E2104" autocomplete="off" />
+          </div>
+          
+          <div class="form-group">
+            <label for="phoneInput">Phone</label>
+            <input id="phoneInput" type="tel" name="phone" placeholder="10-digit number" pattern="[0-9]{10}" />
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="notesInput">Notes</label>
+          <textarea id="notesInput" name="notes" rows="2" placeholder="Gift ideas, preferences, etc."></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-large">
+            <i class="fas fa-save"></i>
+            Save Birthday
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>Made with ❤️ for the community • <a href="https://github.com/yourusername/birthday-bash" target="_blank">View on GitHub</a></p>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  
+  <!-- Chai Modal -->
+  <div class="modal" id="chaiModal">
+    <div class="modal-overlay" onclick="closeModal('chaiModal')"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-mug-hot"></i> Support Birthday Bash</h3>
+        <button class="close-btn" onclick="closeModal('chaiModal')" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This app is completely free! Buy the developer a chai to keep it running ☕</p>
+        <div class="tip-buttons">
+          <button class="btn chai-btn" onclick="tip(25)">₹25</button>
+          <button class="btn chai-btn" onclick="tip(50)">₹50</button>
+          <button class="btn chai-btn" onclick="tip(100)">₹100</button>
+          <button class="btn chai-btn" onclick="tip(200)">₹200</button>
+        </div>
+        <div class="upi-box">
+          <strong>UPI ID:</strong> 8341346818@ybl
+          <button class="btn-icon copy-btn" onclick="copyUPI()" title="Copy UPI">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<button class="floating-chai" onclick="openChai()" aria-label="Support developer"><i class="fas fa-mug-hot"></i></button>
+  <!-- Statistics Modal -->
+  <div class="modal" id="statsModal">
+    <div class="modal-overlay" onclick="closeModal('statsModal')"></div>
+    <div class="modal-content modal-large">
+      <div class="modal-header">
+        <h3><i class="fas fa-chart-pie"></i> Birthday Statistics</h3>
+        <button class="close-btn" onclick="closeModal('statsModal')" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="statsContent"></div>
+      </div>
+    </div>
+  </div>
 
-<script>
-/* ---------- 1.  initial JSON (immutable baseline) ---------- */
-const baseJSON = [
-{name:"Goutham",flat:"E2104",month:"Jan",day:10,phone:"9052323232",party2025:"Yes"},
-{name:"Ravindra",flat:"F1605",month:"Jan",day:21,phone:"9160061456",party2025:"Yes"},
-{name:"Nagi",flat:"J1701",month:"March",day:1,phone:"7674014433",party2025:"Yes"},
-{name:"Varun",flat:"B2308",month:"March",day:8,phone:"7406269369",party2025:"Yes"},
-{name:"Shiva Kaku",flat:"",month:"March",day:23,phone:"9160730005",party2025:"No"},
-{name:"Damoder",flat:"E901",month:"Apr",day:27,phone:"9573868588",party2025:"Yes"},
-{name:"Mogili",flat:"A901",month:"May",day:10,phone:"7337328671",party2025:"No"},
-{name:"Raj",flat:"F1003",month:"Jun",day:11,phone:"9949531325",party2025:"Yes"},
-{name:"Srikanth",flat:"L904",month:"Jun",day:15,phone:"9618567876",party2025:"Yes"},
-{name:"Vijay",flat:"H1904",month:"July",day:12,phone:"9000277757",party2025:"No"},
-{name:"Srinivasu B",flat:"F1008",month:"Jul",day:28,phone:"9160026888",party2025:"Yes"},
-{name:"Chaitu",flat:"G1008",month:"Aug",day:6,phone:"9704007409",party2025:"Yes"},
-{name:"Ramesh",flat:"C2104",month:"Sep",day:4,phone:"8886438888",party2025:"No"},
-{name:"Bhargav",flat:"H505",month:"Sep",day:25,phone:"8886178468",party2025:"No"},
-{name:"Mohan",flat:"F408",month:"Jun",day:1,phone:"9916666931",party2025:"No"},
-{name:"Sandeep",flat:"M903",month:"Nov",day:18,phone:"6303726803",party2025:"No"},
-{name:"PD",flat:"C2306",month:"Nov",day:19,phone:"8341346818",party2025:"No"},
-{name:"Sanjay",flat:"I1202",month:"Nov",day:30,phone:"9182001190",party2025:"No"},
-{name:"Nagesh",flat:"F701",month:"Dec",day:3,phone:"9908000038",party2025:"Yes"},
-{name:"Suryprakash",flat:"I1903",month:"Dec",day:6,phone:"",party2025:"No"},
-{name:"Jagannadh",flat:"F906",month:"Dec",day:16,phone:"9989044670",party2025:"Yes"}
-];
+  <!-- Import CSV Modal -->
+  <div class="modal" id="importModal">
+    <div class="modal-overlay" onclick="closeModal('importModal')"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-file-import"></i> Import from CSV</h3>
+        <button class="close-btn" onclick="closeModal('importModal')" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Upload a CSV file with columns: Name, Flat, Birthday (YYYY-MM-DD), Phone, Notes</p>
+        <div class="file-upload">
+          <input type="file" id="csvFile" accept=".csv" />
+          <button class="btn btn-primary" onclick="importCSV()">
+            <i class="fas fa-upload"></i>
+            Import
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-/* ---------- 2.  JSON storage helpers ---------- */
-const STORAGE_KEY = 'birthdayJSON';        // mutable JSON lives here
-function loadJSON(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [...baseJSON]; // clone baseline first time
-  }catch{ return [...baseJSON]; }
-}
-function saveJSON(arr){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-}
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal">
+    <div class="modal-overlay" onclick="closeModal('editModal')"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-edit"></i> Edit Birthday</h3>
+        <button class="close-btn" onclick="closeModal('editModal')" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="updateBirthday(event)" id="editForm">
+          <input type="hidden" id="editIndex" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="editName">Name *</label>
+              <input id="editName" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="editBirthday">Birthday *</label>
+              <input id="editBirthday" type="date" name="birthday" required />
+            </div>
+            <div class="form-group">
+              <label for="editFlat">Flat</label>
+              <input id="editFlat" name="flat" />
+            </div>
+            <div class="form-group">
+              <label for="editPhone">Phone</label>
+              <input id="editPhone" type="tel" name="phone" pattern="[0-9]{10}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editNotes">Notes</label>
+            <textarea id="editNotes" name="notes" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editParty">2025 Party Status</label>
+            <select id="editParty" name="party2025" class="select-fancy">
+              <option value="No">Not given</option>
+              <option value="Yes">Given</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-/* ---------- 3.  state ---------- */
-let json = loadJSON();          // single source of truth
-let phonesVisible = false;
-let sortCol = 'daysLeft', sortDir = 1;
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="openModal('chaiModal')" aria-label="Support developer">
+    <i class="fas fa-mug-hot"></i>
+  </button>
 
-/* ---------- 4.  render ---------- */
-function render(){
-  const s = document.getElementById('search').value.trim().toLowerCase();
-  const p = document.getElementById('partyFilter').value;
-
-  // enrich once (non-mutating)
-  const enriched = json.map(o=>{
-    const days = getDays(o.month,o.day);
-    return {...o, daysLeft: days, rowClass: days===0?'today':(days>0&&days<=30)?'upcoming':''};
-  });
-
-  // sort
-  enriched.sort((a,b)=>{
-    let v1 = a[sortCol], v2 = b[sortCol];
-    if(sortCol==='daysLeft'){ v1=Number(v1); v2=Number(v2); }
-    else { v1=v1?.toLowerCase()||''; v2=v2?.toLowerCase()||''; }
-    return v1>v2 ? sortDir : v1<v2 ? -sortDir : 0;
-  });
-
-  // filter
-  const filtered = enriched.filter(o=>
-    (!s||o.name.toLowerCase().includes(s)||o.flat.toLowerCase().includes(s)) &&
-    (!p||o.party2025.toLowerCase()===p)
-  );
-
-  const rows = filtered.map((o,idx)=>`
-  <tr class="${o.rowClass}" data-id="${o.id||idx}">
-    <td>${o.name}</td>
-    <td>${o.flat||'-'}</td>
-    <td>${o.month||'???'} ${o.day||''}</td>
-    <td><span class="phoneMasked">${mask(o.phone)}</span><span class="phoneReal" hidden>${o.phone||'-'}</span></td>
-    <td><span class="status ${o.party2025.toLowerCase()}">${o.party2025}</span></td>
-    <td>${o.daysLeft===0?'Today! 🎉':o.daysLeft+' days'}</td>
-    <td>
-      <button class="btn btn-primary" onclick="editRow(${o.id??idx})"><i class="fas fa-edit"></i></button>
-      <button class="btn" style="background:var(--danger);color:#fff" onclick="delRow(${o.id??idx})"><i class="fas fa-trash"></i></button>
-    </td>
-  </tr>`).join('');
-
-  document.querySelector('tbody').innerHTML = rows || '<tr><td colspan="7" style="text-align:center">No matches</td></tr>';
-  togglePhones(phonesVisible);
-}
-
-/* ---------- 5.  utils ---------- */
-function getDays(mon,day){
-  if(!mon||!day) return 9999;
-  const m = {
-  jan:0, january:0,
-  feb:1, february:1,
-  mar:2, march:2,
-  apr:3, april:3,
-  may:4,
-  jun:5, june:5,
-  jul:6, july:6,
-  aug:7, august:7,
-  sep:8, september:8,
-  oct:9, october:9,
-  nov:10,november:10,
-  dec:11,december:11
-};
-  const today=new Date(), y=today.getFullYear(), b=new Date(y,m[mon.toLowerCase()],day);
-  if(b<today) b.setFullYear(y+1);
-  return Math.ceil((b-today)/864e5);
-}
-function mask(p){return p?p.slice(0,2)+'•••••'+p.slice(-2):'-';}
-function scrollToForm(){document.getElementById('addCard').scrollIntoView({behavior:'smooth'});}
-function togglePhones(force){
-  phonesVisible = force!=null ? force : !phonesVisible;
-  document.querySelectorAll('.phoneMasked').forEach(el=>el.hidden=phonesVisible);
-  document.querySelectorAll('.phoneReal').forEach(el=>el.hidden=!phonesVisible);
-  document.getElementById('phoneBtn').textContent = phonesVisible ? 'Hide phones' : 'Show phones';
-}
-
-/* ---------- 6.  sort ---------- */
-function sortCol(col){
-  if(sortCol===col) sortDir*=-1; else {sortCol=col; sortDir=1;}
-  render();
-}
-
-/* ---------- 7.  crud (mutates JSON + saves) ---------- */
-function saveBirthday(e){
-  e.preventDefault();
-  const f = new FormData(e.target);
-  const date = new Date(f.get('birthday'));
-  const entry = {
-    name: f.get('name'),
-    flat: f.get('flat')||'',
-    month: date.toLocaleString('en',{month:'short'}),
-    day: date.getDate(),
-    phone: f.get('phone')||'',
-    notes: f.get('notes')||'',
-    party2025: 'No',
-    id: Date.now() // simple unique key
-  };
-  json.push(entry);
-  saveJSON(json);
-  e.target.reset();
-  render();
-  showToast('Saved!');
-}
-function editRow(id){
-  const idx = json.findIndex(x=>x.id===id);
-  if(idx===-1) return;
-  const o=json[idx];
-  const name=prompt('Name',o.name);   if(!name) return;
-  const flat=prompt('Flat',o.flat);
-  const phone=prompt('Phone',o.phone);
-  json[idx]={...o,name,flat,phone};
-  saveJSON(json); render(); showToast('Updated!');
-}
-function delRow(id){
-  if(!confirm('Delete this birthday?')) return;
-  json=json.filter(x=>x.id!==id);
-  saveJSON(json); render(); showToast('Deleted');
-}
-
-/* ---------- 8.  chai ---------- */
-function openChai(){document.getElementById('chaiModal').classList.add('active');}
-function closeModal(id){document.getElementById(id).classList.remove('active');}
-function tip(amt){
-  location.href=`upi://pay?pa=8341346818@ybl&pn=BirthdayBash&am=${amt}&cu=INR&tn=Support`;
-  setTimeout(()=>{closeModal('chaiModal'); showToast('Thanks for the chai!');},600);
-}
-function showToast(msg){
-  const t=document.createElement('div'); t.textContent=msg;
-  t.style.cssText='position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:.75rem 1.25rem; border-radius:var(--radius); box-shadow:var(--shadow); z-index:3000; animation:fade .3s';
-  document.body.appendChild(t); setTimeout(()=>t.remove(),2000);
-}
-
-/* ---------- 9.  listeners ---------- */
-document.getElementById('search').addEventListener('input',render);
-document.getElementById('partyFilter').addEventListener('change',render);
-window.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'));});
-
-/* ---------- 10.  boot ---------- */
-render();
-</script>
+  <script src="app.js"></script>
 </body>
 </html>
