@@ -5,7 +5,7 @@ const existing = [
   { name: "Nagi", flat: "J1701", month: "March", day: 7, phone: "7674014433", party2025: "Yes", notes: "" },
   { name: "Varun", flat: "B2308", month: "March", day: 7, phone: "7406269369", party2025: "Yes", notes: "" },
   { name: "Damoder", flat: "E901", month: "Apr", day: 27, phone: "9573868588", party2025: "Yes", notes: "" },
-  { name: "Mogili", flat: "A901", month: "May", day: 10, phone: "7337328671", party2025: "No", notes: "" },
+  { name: "Mogili", flat: "A901", month: "May", day: 10, phone: "7337328671", party2025: "Yes", notes: "" },
   { name: "Raj", flat: "F1003", month: "Jun", day: 11, phone: "9949531325", party2025: "Yes", notes: "" },
   { name: "Srikanth", flat: "L904", month: "Jun", day: 15, phone: "9618567876", party2025: "Yes", notes: "" },
   { name: "Vijay", flat: "H1904", month: "July", day: 12, phone: "9000277757", party2025: "Yes", notes: "" },
@@ -18,7 +18,7 @@ const existing = [
   { name: "PD", flat: "C2306", month: "Nov", day: 19, phone: "8341346818", party2025: "Yes", notes: "" },
   { name: "Sanjay", flat: "I1202", month: "Nov", day: 30, phone: "9182001190", party2025: "No", notes: "" },
   { name: "Nagesh", flat: "F701", month: "Dec", day: 3, phone: "9908000038", party2025: "No", notes: "" },
-  { name: "Suryprakash", flat: "I1903", month: "Dec", day: 6, phone: "", party2025: "No", notes: "" },
+  { name: "Suryaprakash", flat: "I1903", month: "Dec", day: 6, phone: "", party2025: "Yes", notes: "" },
   { name: "Jagannadh", flat: "F906", month: "Dec", day: 16, phone: "9989044670", party2025: "No", notes: "" },
   { name: "Sunil KSK", flat: "E1708", month: "July", day: 15, phone: "9885674917", party2025: "Yes", notes: "" }
 ];
