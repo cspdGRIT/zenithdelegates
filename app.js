@@ -18,6 +18,7 @@ const existing = [
   { name: "PD", flat: "C2306", month: "Nov", day: 19, phone: "8341346818", party2025: "Yes", notes: "" },
   { name: "Sanjay", flat: "I1202", month: "Nov", day: 30, phone: "9182001190", party2025: "No", notes: "" },
   { name: "Nagesh", flat: "F701", month: "Dec", day: 3, phone: "9908000038", party2025: "No", notes: "" },
+  { name: "Surya", flat: "F1308", month: "Nov", day: 2, phone: "", party2025: "No", notes: "" },
   { name: "Suryaprakash", flat: "I1903", month: "Dec", day: 6, phone: "", party2025: "Yes", notes: "" },
   { name: "Jagannadh", flat: "F906", month: "Dec", day: 16, phone: "9989044670", party2025: "No", notes: "" },
   { name: "Sunil KSK", flat: "E1708", month: "July", day: 15, phone: "9885674917", party2025: "Yes", notes: "" }
